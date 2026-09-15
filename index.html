@@ -25,6 +25,7 @@
   <button class="main-tab" data-view="treinoView">🏋️ Meu Treino</button>
   <button class="main-tab" data-view="bibliotecaView">📚 Biblioteca</button>
   <button class="main-tab" data-view="recomendacoesView">🧭 Recomendações</button>
+  <button class="main-tab" data-view="geradorView">📝 Gerar treino</button>
 </nav>
 
 <section id="fichaView" class="view active">
@@ -49,6 +50,25 @@
   <div class="section-head"><div><h2>Recomendações</h2><p>Escolha um objetivo para ver uma estrutura baseada em revisões e diretrizes.</p></div></div>
   <div id="recommendationFilters" class="recommendation-filters"></div>
   <div id="recommendationContent"></div>
+</section>
+
+<section id="geradorView" class="view">
+  <div class="section-head"><div><h2>Gerar treino com ChatGPT</h2><p>Preencha suas preferências e gere um documento pronto para enviar.</p></div></div>
+  <form id="promptForm" class="prompt-form">
+    <div class="prompt-fields">
+      <label>Objetivo<input name="objective" placeholder="Ex.: hipertrofia, força ou emagrecimento"></label>
+      <label>Nível<input name="level" placeholder="Ex.: iniciante, retorno ou intermediário"></label>
+      <label>Duração por treino<input name="duration" placeholder="Ex.: 60 minutos"></label>
+      <label>Restrições ou dores<input name="restrictions" placeholder="Ex.: nenhuma, dor no ombro..."></label>
+      <label>Equipamentos disponíveis<input name="equipment" placeholder="Ex.: academia completa"></label>
+      <label>Preferências<input name="preferences" placeholder="Ex.: mais máquinas, incluir cardio"></label>
+      <label>Exercícios obrigatórios<input name="required" placeholder="Ex.: supino reto, remada baixa"></label>
+      <label>Exercícios a evitar<input name="avoid" placeholder="Ex.: levantamento terra"></label>
+    </div>
+    <fieldset class="prompt-days"><legend>Dias disponíveis</legend><div>${DAYS.map(day=>`<label><input type="checkbox" name="days" value="${day}" checked> ${day}</label>`).join('')}</div></fieldset>
+    <div class="prompt-actions"><button class="btn primary" type="submit">⚙️ Gerar documento</button><button class="btn" type="button" id="copyPrompt">📋 Copiar</button><button class="btn" type="button" id="downloadPrompt">⬇️ Baixar .md</button></div>
+  </form>
+  <textarea id="promptOutput" class="prompt-output" aria-label="Documento gerado" spellcheck="false"></textarea>
 </section>
 </div>
 

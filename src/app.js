@@ -35,6 +35,7 @@ function switchView(id){
   if(id==="treinoView") renderBuilder();
   if(id==="bibliotecaView") renderLibrary();
   if(id==="recomendacoesView") renderRecommendations();
+  if(id==="geradorView") generatePrompt();
 }
 document.querySelectorAll(".main-tab").forEach(b=>b.onclick=()=>switchView(b.dataset.view));
 
@@ -280,6 +281,27 @@ function renderRecommendations(){
     <p class="recommendation-disclaimer">Diretriz geral para adultos saudaveis. Dor, lesao, gestacao, doencas ou uso de medicamentos pedem avaliacao profissional. Ajuste exercicios, volume e cardio ao seu nivel, rotina e recuperacao.</p>`;
 }
 
+function catalogForPrompt(){
+  return [...new Set(CATALOG.map(x=>x.muscle))].map(muscle=>`### ${muscle}\n${CATALOG.filter(x=>x.muscle===muscle).map(x=>`- ${x.id} = ${x.name}`).join('\n')}`).join('\n\n');
+}
+function generatePrompt(){
+  const form=document.getElementById('promptForm');
+  if(!form)return;
+  const data=new FormData(form);
+  const value=name=>String(data.get(name)||'').trim()||'Não informado';
+  const days=data.getAll('days');
+  const output=`# Prompt para gerar meu treino importável\n\nVocê é um planejador de treinos. Monte um treino usando exclusivamente os músculos e exercícios do catálogo abaixo.\n\n## Minhas preferências\n- Objetivo: ${value('objective')}\n- Nível: ${value('level')}\n- Dias disponíveis: ${days.join(', ')||'Nenhum informado'}\n- Duração por treino: ${value('duration')}\n- Restrições ou dores: ${value('restrictions')}\n- Equipamentos: ${value('equipment')}\n- Preferências: ${value('preferences')}\n- Exercícios obrigatórios: ${value('required')}\n- Exercícios a evitar: ${value('avoid')}\n\n## Regras obrigatórias\n1. Responda somente com um JSON válido, sem texto extra e sem crases.\n2. Use exatamente os dias Segunda, Terça, Quarta, Quinta, Sexta, Sábado e Domingo.\n3. Preencha apenas os dias disponíveis; os outros devem ficar vazios.\n4. Use somente IDs deste catálogo. Nunca invente ou altere IDs.\n5. Use done como false, weight como "", actualReps como "", note como "".\n6. Use sets, targetReps e rest como strings. Rest é em segundos.\n7. Não inclua GIFs, fontes, descrições ou histórico preenchido.\n8. Escolha volume coerente com o objetivo, nível, tempo e recuperação. Oito exercícios são opções; não é obrigatório executar todos no mesmo dia.\n9. Antes de responder, confira se cada ID e muscle existem neste catálogo.\n\n## Formato obrigatório\n\\`\`\`json\n{\n  "version": 1,\n  "days": {\n    "Segunda": { "muscles": [], "exercises": [] },\n    "Terça": { "muscles": [], "exercises": [] },\n    "Quarta": { "muscles": [], "exercises": [] },\n    "Quinta": { "muscles": [], "exercises": [] },\n    "Sexta": { "muscles": [], "exercises": [] },\n    "Sábado": { "muscles": [], "exercises": [] },\n    "Domingo": { "muscles": [], "exercises": [] }\n  },\n  "history": []\n}\n\`\`\`\n\nCada exercício deve ter: id, muscle, done, sets, targetReps, weight, actualReps, rest e note.\n\n## Catálogo oficial de músculos e IDs\n\n${catalogForPrompt()}`;
+  document.getElementById('promptOutput').value=output.replace('\u007f','');
+}
+function setupPromptGenerator(){
+  const form=document.getElementById('promptForm');
+  if(!form)return;
+  form.addEventListener('submit',event=>{event.preventDefault();generatePrompt();toast('Documento gerado.');});
+  document.getElementById('copyPrompt').onclick=async()=>{generatePrompt();const output=document.getElementById('promptOutput');try{await navigator.clipboard.writeText(output.value);}catch{output.select();document.execCommand('copy');}toast('Documento copiado.');};
+  document.getElementById('downloadPrompt').onclick=()=>{generatePrompt();const blob=new Blob([document.getElementById('promptOutput').value],{type:'text/markdown;charset=utf-8'});const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='prompt-gerador-de-treino.md';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Documento baixado.');};
+  generatePrompt();
+}
+
 function openAddModal(id){
   const x=BY_ID[id];
   document.getElementById("modalTitle").textContent="Adicionar "+x.name;
@@ -298,6 +320,7 @@ document.getElementById("imageModal").addEventListener("click",e=>{if(e.target.i
 
 renderFicha();
 renderRecommendations();
+setupPromptGenerator();
 
 function searchText(value){return value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
