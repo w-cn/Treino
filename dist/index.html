@@ -6,9 +6,25 @@
 <meta name="theme-color" content="#07101d">
 <title>Meu Treino — Ficha + Biblioteca</title>
 <link rel="stylesheet" href="./src/styles/main.css">
+<link rel="stylesheet" href="./src/styles/navigation.css">
 </head>
 <body>
-<div class="app">
+<aside id="sidebar" class="sidebar" aria-label="Menu principal">
+  <button id="sidebarToggle" class="sidebar-toggle" aria-label="Expandir menu" aria-expanded="false" aria-controls="sidebarNav"><span aria-hidden="true">☰</span><span class="nav-label">Meu Treino</span></button>
+  <nav id="sidebarNav" class="sidebar-nav">
+    <button class="main-tab" data-view="inicioView" aria-label="Início" title="Início"><span aria-hidden="true">⌂</span><span class="nav-label">Início</span></button>
+    <button class="main-tab" data-view="fichaView" aria-label="Minha Ficha" title="Minha Ficha"><span aria-hidden="true">📋</span><span class="nav-label">Minha Ficha</span></button>
+    <button class="main-tab" data-view="treinoView" aria-label="Meu Treino" title="Meu Treino"><span aria-hidden="true">🏋️</span><span class="nav-label">Meu Treino</span></button>
+    <button class="main-tab" data-view="bibliotecaView" aria-label="Biblioteca" title="Biblioteca"><span aria-hidden="true">📚</span><span class="nav-label">Biblioteca</span></button>
+    <button class="main-tab" data-view="recomendacoesView" aria-label="Recomendações" title="Recomendações"><span aria-hidden="true">🧭</span><span class="nav-label">Recomendações</span></button>
+    <button class="main-tab" data-view="geradorView" aria-label="Gerar treino" title="Gerar treino"><span aria-hidden="true">📝</span><span class="nav-label">Gerar treino</span></button>
+    <button class="main-tab settings-nav" data-view="configuracoesView" aria-label="Configurações" title="Configurações"><span aria-hidden="true">⚙️</span><span class="nav-label">Configurações</span></button>
+  </nav>
+</aside>
+<button id="sidebarBackdrop" class="sidebar-backdrop" aria-label="Fechar menu" hidden></button>
+<main class="app" id="mainContent">
+<div class="pagebar"><span id="currentPageTitle">Início</span></div>
+<section id="inicioView" class="view active" aria-label="Início">
 <header>
   <h1>🏋️ Meu Treino</h1>
   <p class="sub">Monte seus dias, escolha os músculos e exercícios e acompanhe cargas, repetições e histórico neste navegador.</p>
@@ -19,18 +35,18 @@
     <span class="pill">🎞️ GIF + descrição</span>
   </div>
 </header>
-
-<nav class="main-tabs">
-  <button class="main-tab tab-ficha active" data-view="fichaView"><strong>📋 Minha Ficha</strong><small>Execute e acompanhe</small></button>
-  <button class="main-tab tab-treino" data-view="treinoView"><strong>🏋️ Meu Treino</strong><small>Monte seus dias</small></button>
-  <button class="main-tab tab-biblioteca" data-view="bibliotecaView"><strong>📚 Biblioteca</strong><small>Explore exercícios</small></button>
-  <button class="main-tab tab-recomendacoes" data-view="recomendacoesView"><strong>🧭 Recomendações</strong><small>Veja planos prontos</small></button>
-  <button class="main-tab tab-gerador" data-view="geradorView"><strong>📝 Gerar treino</strong><small>Crie e aplique</small></button>
-</nav>
-
-<section id="fichaView" class="view active">
+<p class="home-hint">Abra o menu lateral para acessar sua ficha, montar treinos e explorar a biblioteca.</p>
+<div class="home-shortcuts" aria-label="Atalhos principais">
+  <button class="home-shortcut shortcut-ficha" data-shortcut="fichaView"><strong>📋 Minha Ficha</strong><span>Execute e acompanhe seu treino.</span></button>
+  <button class="home-shortcut shortcut-treino" data-shortcut="treinoView"><strong>🏋️ Meu Treino</strong><span>Monte dias, músculos e exercícios.</span></button>
+  <button class="home-shortcut shortcut-biblioteca" data-shortcut="bibliotecaView"><strong>📚 Biblioteca</strong><span>Explore exercícios e referências.</span></button>
+  <button class="home-shortcut shortcut-recomendacoes" data-shortcut="recomendacoesView"><strong>🧭 Recomendações</strong><span>Consulte planos baseados em estudos.</span></button>
+  <button class="home-shortcut shortcut-gerador" data-shortcut="geradorView"><strong>📝 Gerar treino</strong><span>Prepare um plano para importar.</span></button>
+</div>
+</section>
+<section id="fichaView" class="view">
   <div class="section-head"><div><h2>Minha Ficha</h2><p>Execute os exercícios. Ao concluir, ele vai para o final da fila.</p></div></div>
-  <div class="toolbar"><button class="btn" id="newSession">Nova sessão</button><button class="btn" id="showHistory">Histórico</button><button class="btn" id="exportState">Exportar backup</button><label class="btn">Importar backup<input id="importState" type="file" accept="application/json,.json" hidden></label></div><div id="fichaDayTabs" class="day-tabs"></div>
+  <div id="fichaDayTabs" class="day-tabs"></div>
   <div id="fichaDays"></div>
 </section>
 
@@ -73,7 +89,15 @@
   </form>
   <textarea id="promptOutput" class="prompt-output" aria-label="Documento gerado" spellcheck="false"></textarea>
 </section>
-</div>
+<section id="configuracoesView" class="view">
+  <div class="section-head"><div><h2>Configurações</h2><p>Gerencie suas sessões, consulte o histórico e cuide dos dados salvos neste navegador.</p></div></div>
+  <div class="settings-grid">
+    <section class="settings-card"><h3>Sessões e histórico</h3><p>Inicie outra sessão de um dia da ficha mantendo as cargas e o histórico.</p><label for="settingsSessionDay">Dia da sessão</label><select id="settingsSessionDay"></select><div class="toolbar"><button class="btn primary" id="newSession">Nova sessão</button><button class="btn" id="showHistory">Histórico</button></div></section>
+    <section class="settings-card"><h3>Backup</h3><p>Exporte sua ficha e histórico em JSON ou restaure um backup salvo.</p><div class="toolbar"><button class="btn" id="exportState">Exportar backup</button><button class="btn" id="importBackupButton">Importar backup</button><input id="importState" type="file" accept="application/json,.json" hidden></div></section>
+    <section class="settings-card reset-card"><h3>Excluir dados / reset</h3><p>Apaga a ficha de todos os dias e o histórico deste navegador. Exporte um backup antes se quiser preservar os dados.</p><button class="btn danger" id="resetData">Excluir ficha e histórico</button></section>
+  </div>
+</section>
+</main>
 
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 <div id="imageModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="sheet"><div class="sheet-head"><h3 id="modalTitle"></h3><button class="btn" id="modalClose">Fechar</button></div><div id="modalContent" style="margin-top:10px"></div></div></div>

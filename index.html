@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#07101d">
 <title>Meu Treino — Ficha + Biblioteca</title>
 <link rel="stylesheet" href="./src/styles/main.css">
+<link rel="stylesheet" href="./src/styles/navigation.css">
 </head>
 <body>
 <aside id="sidebar" class="sidebar" aria-label="Menu principal">
@@ -35,6 +36,13 @@
   </div>
 </header>
 <p class="home-hint">Abra o menu lateral para acessar sua ficha, montar treinos e explorar a biblioteca.</p>
+<div class="home-shortcuts" aria-label="Atalhos principais">
+  <button class="home-shortcut shortcut-ficha" data-shortcut="fichaView"><strong>📋 Minha Ficha</strong><span>Execute e acompanhe seu treino.</span></button>
+  <button class="home-shortcut shortcut-treino" data-shortcut="treinoView"><strong>🏋️ Meu Treino</strong><span>Monte dias, músculos e exercícios.</span></button>
+  <button class="home-shortcut shortcut-biblioteca" data-shortcut="bibliotecaView"><strong>📚 Biblioteca</strong><span>Explore exercícios e referências.</span></button>
+  <button class="home-shortcut shortcut-recomendacoes" data-shortcut="recomendacoesView"><strong>🧭 Recomendações</strong><span>Consulte planos baseados em estudos.</span></button>
+  <button class="home-shortcut shortcut-gerador" data-shortcut="geradorView"><strong>📝 Gerar treino</strong><span>Prepare um plano para importar.</span></button>
+</div>
 </section>
 <section id="fichaView" class="view">
   <div class="section-head"><div><h2>Minha Ficha</h2><p>Execute os exercícios. Ao concluir, ele vai para o final da fila.</p></div></div>

@@ -1,16 +1,19 @@
 import { CATALOG, BY_ID, MUSCLES } from './data/catalog.js';
-import { DAYS } from './data/state.js';
+import { DAYS, defaultState } from './data/state.js';
 import { loadState, persistState, flushState, storageStatus } from './services/storage.js';
 import './services/media.js';
 import { belongsTo, createExercise, reserveGroups, replacementTargets, replaceExercise } from './data/workout.js';
 import { RECOMMENDATIONS } from './data/recommendations.js';
+import { readPreferences, savePreferences, setupNavigation } from './ui/navigation.js';
 const DEFAULT_REST = { "Peito":"90–120 s","Costas":"90–120 s","Bíceps":"60–90 s","Tríceps":"60–90 s","Deltoides":"60–90 s","Ombros":"60–90 s","Pernas":"90–120 s","Panturrilhas":"60–90 s","Abdômen":"60–90 s","Trapézio":"60–90 s","Antebraço":"60–90 s","Glúteos":"60–90 s" };
 let state = await loadState();
 document.getElementById('storageStatus').textContent=storageStatus;
-let currentFichaDay = 0;
-let currentLibraryMuscle = "Todos";
-let currentRecommendation = 'massa';
+const preferences=readPreferences();
+let currentFichaDay = Math.max(0,DAYS.indexOf(preferences.day));
+let currentLibraryMuscle = MUSCLES.includes(preferences.libraryMuscle)?preferences.libraryMuscle:'Todos';
+let currentRecommendation = RECOMMENDATIONS.some(x=>x.id===preferences.recommendation)?preferences.recommendation:'massa';
 let timers = {};
+let navigation;
 
 function saveState(){ persistState(state); }
 function toast(msg){
@@ -18,8 +21,8 @@ function toast(msg){
   clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove("show"),1800);
 }
 function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-function mediaDetails(x){
-  return `${x.mediaCaption?`<p class="media-caption">${esc(x.mediaCaption)}</p>`:''}${x.mediaSource?`<a class="media-source" href="${esc(x.mediaSource)}" target="_blank" rel="noopener">Fonte da demonstração ↗</a>`:''}`;
+function mediaDetails(x,showSource=false){
+  return `${x.mediaCaption?`<p class="media-caption">${esc(x.mediaCaption)}</p>`:''}${showSource?`<a class="media-source" href="https://www.hipertrofia.org/blog/exercicios-de-musculacao/" target="_blank" rel="noopener">Referência no Hipertrofia.org ↗</a>`:''}`;
 }
 function exerciseData(id){
   const x=BY_ID[id]; if(!x) return null;
@@ -29,15 +32,15 @@ function normalizeDayExercises(day){
   state.days[day].exercises = state.days[day].exercises.filter(e=>BY_ID[e.id]);
 }
 function switchView(id){
-  document.querySelectorAll(".main-tab").forEach(b=>b.classList.toggle("active",b.dataset.view===id));
-  document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id===id));
+  navigation.go(id);
+}
+function renderView(id){
   if(id==="fichaView") renderFicha();
   if(id==="treinoView") renderBuilder();
   if(id==="bibliotecaView") renderLibrary();
   if(id==="recomendacoesView") renderRecommendations();
-  if(id==="geradorView") generatePrompt();
+  if(id==='configuracoesView')document.getElementById('settingsSessionDay').value=DAYS[currentFichaDay];
 }
-document.querySelectorAll(".main-tab").forEach(b=>b.onclick=()=>switchView(b.dataset.view));
 
 function renderFicha(){
   const visibleDays=DAYS.filter(day=>!['Sábado','Domingo'].includes(day)||state.days[day].exercises.length>0);
@@ -45,7 +48,7 @@ function renderFicha(){
   if(!visibleDays.includes(DAYS[currentFichaDay])) currentFichaDay=DAYS.indexOf(visibleDays[0]);
   const tabs=document.getElementById("fichaDayTabs");
   tabs.innerHTML=visibleDays.map(d=>{const i=DAYS.indexOf(d);return `<button class="day-tab ${i===currentFichaDay?"active":""}" data-i="${i}">${dayIcon(d)}<br>${d}</button>`}).join("");
-  tabs.querySelectorAll("button").forEach(b=>b.onclick=()=>{currentFichaDay=+b.dataset.i;renderFicha()});
+  tabs.querySelectorAll("button").forEach(b=>b.onclick=()=>{currentFichaDay=+b.dataset.i;savePreferences({day:DAYS[currentFichaDay]});renderFicha()});
   const wrap=document.getElementById("fichaDays");
   wrap.innerHTML=visibleDays.map(d=>renderFichaDay(d,d===DAYS[currentFichaDay])).join("");
   bindFicha();
@@ -242,24 +245,25 @@ function moveExercise(day,id,dir){
   [a[i],a[j]]=[a[j],a[i]];saveState();renderBuilder();
 }
 document.getElementById("builder").addEventListener("click",e=>{
-  const b=e.target.closest("[data-go-ficha]");if(b){currentFichaDay=DAYS.indexOf(b.dataset.goFicha);switchView("fichaView");}
+  const b=e.target.closest("[data-go-ficha]");if(b){currentFichaDay=DAYS.indexOf(b.dataset.goFicha);savePreferences({day:DAYS[currentFichaDay]});switchView("fichaView");}
 });
 
 function renderLibrary(){
   const filter=document.getElementById("catalogFilter");
   const cats=["Todos",...MUSCLES];
   filter.innerHTML=cats.map(m=>`<button class="btn ${m===currentLibraryMuscle?"primary":""}" data-muscle="${esc(m)}">${esc(m)}</button>`).join("");
-  filter.querySelectorAll("button").forEach(b=>b.onclick=()=>{currentLibraryMuscle=b.dataset.muscle;renderLibrary()});
+  filter.querySelectorAll("button").forEach(b=>b.onclick=()=>{currentLibraryMuscle=b.dataset.muscle;savePreferences({libraryMuscle:currentLibraryMuscle});renderLibrary()});
   const q=searchText(document.getElementById("librarySearch").value);
   const arr=CATALOG.filter(x=>(currentLibraryMuscle==="Todos"||belongsTo(x,currentLibraryMuscle))&&(!q||searchText(x.name).includes(q)||searchText((x.muscles||[x.muscle]).join(' ')).includes(q)||searchText(x.equipment).includes(q)));
   document.getElementById("catalogGrid").innerHTML=arr.map(x=>`<article class="lib-card">
     ${x.gif?`<img loading="lazy" src="${esc(x.gif || "/public/media-unavailable.svg")}" alt="Execução: ${esc(x.name)}">`:`<div class="empty" style="height:160px;display:flex;align-items:center;justify-content:center;border:0;border-radius:0">GIF não disponível no material atual</div>`}
-    <div class="lib-body"><strong>${esc(x.name)}</strong><div class="lib-meta"><span class="tag">${esc(x.muscle)}</span><span class="tag">🔧 ${esc(x.equipment)}</span></div><p>${esc(x.description)}</p>${mediaDetails(x)}
-    <div class="lib-actions"><button class="btn primary" data-lib-add="${esc(x.id)}">+ Adicionar</button>${x.source?`<a class="source" href="${esc(x.source)}" target="_blank" rel="noopener">Fonte</a>`:""}</div></div>
+    <div class="lib-body"><strong>${esc(x.name)}</strong><div class="lib-meta"><span class="tag">${esc(x.muscle)}</span><span class="tag">🔧 ${esc(x.equipment)}</span></div><p>${esc(x.description)}</p>${mediaDetails(x,true)}
+    <div class="lib-actions"><button class="btn primary" data-lib-add="${esc(x.id)}">+ Adicionar</button></div></div>
   </article>`).join("") || "<div class='empty'>Nenhum exercício encontrado.</div>";
   document.querySelectorAll("[data-lib-add]").forEach(b=>b.onclick=()=>openAddModal(b.dataset.libAdd));
 }
-document.getElementById("librarySearch").addEventListener("input",renderLibrary);
+document.getElementById("librarySearch").value=typeof preferences.librarySearch==='string'?preferences.librarySearch:'';
+document.getElementById("librarySearch").addEventListener("input",()=>{savePreferences({librarySearch:document.getElementById('librarySearch').value});renderLibrary();});
 
 function expandRecommendationWorkout(workout){
   const exercises=workout.exercises.map(([name,details])=>({name,details,exercise:CATALOG.find(x=>x.name===name)}));
@@ -289,7 +293,7 @@ function renderRecommendations(){
     if(exercise&&!seenExercises.has(exercise.id)){seenExercises.add(exercise.id);recommendedExercises.push(exercise);}
   }
   document.getElementById('recommendationFilters').innerHTML=RECOMMENDATIONS.map(x=>`<button class="btn ${x.id===item.id?'primary':''}" data-recommendation="${x.id}">${x.icon} ${x.label}</button>`).join('');
-  document.querySelectorAll('[data-recommendation]').forEach(button=>button.onclick=()=>{currentRecommendation=button.dataset.recommendation;renderRecommendations()});
+  document.querySelectorAll('[data-recommendation]').forEach(button=>button.onclick=()=>{currentRecommendation=button.dataset.recommendation;savePreferences({recommendation:currentRecommendation});renderRecommendations()});
   document.getElementById('recommendationContent').innerHTML=`
     <div class="recommendation-hero"><div><span class="eyebrow">${item.target}</span><h3>${item.label}</h3><p>${item.summary}</p></div><span class="recommendation-mark">${item.icon}</span></div>
     <div class="recommendation-grid"><section class="recommendation-panel"><h4>Diretrizes praticas</h4><div class="recommendation-list">${item.prescription.map(([label,value])=>`<div><strong>${label}</strong><span>${value}</span></div>`).join('')}</div></section><section class="recommendation-panel"><h4>Resumo da semana</h4><ol class="week-list">${item.week.map(day=>`<li>${day}</li>`).join('')}</ol><p class="recommendation-note"><strong>Progressao:</strong> ${item.progression}</p></section></div>
@@ -360,17 +364,42 @@ function closeModal(){document.getElementById("imageModal").classList.remove("op
 document.getElementById("modalClose").onclick=closeModal;
 document.getElementById("imageModal").addEventListener("click",e=>{if(e.target.id==="imageModal")closeModal()});
 
-renderFicha();
-renderRecommendations();
 setupPromptGenerator();
+const promptForm=document.getElementById('promptForm');
+if(Array.isArray(preferences.promptForm)){
+  for(const input of promptForm.querySelectorAll('input')){
+    const values=preferences.promptForm.filter(pair=>Array.isArray(pair)&&pair[0]===input.name).map(pair=>pair[1]);
+    if(input.type==='checkbox')input.checked=values.includes(input.value);
+    else if(values.length)input.value=String(values[0]);
+  }
+  generatePrompt();
+}
+if(typeof preferences.promptOutput==='string')document.getElementById('promptOutput').value=preferences.promptOutput;
+function savePrompt(){savePreferences({promptForm:[...new FormData(promptForm)],promptOutput:document.getElementById('promptOutput').value});}
+promptForm.addEventListener('input',savePrompt);
+promptForm.addEventListener('submit',savePrompt);
+document.getElementById('promptOutput').addEventListener('input',savePrompt);
+document.getElementById('settingsSessionDay').innerHTML=DAYS.map(day=>`<option value="${esc(day)}">${esc(day)}</option>`).join('');
+document.getElementById('settingsSessionDay').onchange=event=>{currentFichaDay=DAYS.indexOf(event.target.value);savePreferences({day:DAYS[currentFichaDay]});};
+document.getElementById('importBackupButton').onclick=()=>document.getElementById('importState').click();
+navigation=setupNavigation(renderView);
+document.querySelectorAll('[data-shortcut]').forEach(button=>button.onclick=()=>navigation.go(button.dataset.shortcut));
 
 function searchText(value){return value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 document.getElementById('newSession').onclick=()=>{
-  const day=DAYS[currentFichaDay];
+  const day=document.getElementById('settingsSessionDay').value;
   state.days[day].exercises.forEach(e=>{e.done=false;delete e.completedAt;});
   for(const key of Object.keys(timers))if(key.startsWith(day+':'))delete timers[key];
-  saveState();renderFicha();toast('Nova sessão iniciada. Cargas e histórico preservados.');
+  saveState();toast('Nova sessão de '+day+' iniciada. Cargas e histórico preservados.');
+};
+document.getElementById('resetData').onclick=async()=>{
+  if(!confirm('Excluir a ficha de todos os dias e todo o histórico deste navegador? Essa ação não pode ser desfeita sem um backup.'))return;
+  state=defaultState();timers={};
+  saveState();await flushState();
+  renderFicha();renderBuilder();
+  document.getElementById('promptForm').reset();generatePrompt();savePrompt();
+  toast('Ficha e histórico excluídos.');
 };
 document.getElementById('exportState').onclick=async()=>{
   const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
