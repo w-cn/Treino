@@ -185,6 +185,7 @@ function renderBuilder(){
     el.querySelectorAll(".move-down").forEach(btn=>btn.onclick=()=>moveExercise(day,btn.dataset.id,1));
     el.querySelectorAll("[data-save-day]").forEach(btn=>btn.onclick=()=>{saveState();toast(day+" salvo na sua ficha.");});
     el.querySelectorAll("[data-clear-day]").forEach(btn=>btn.onclick=()=>clearDay(day));
+    el.querySelectorAll("[data-clear-exercises]").forEach(btn=>btn.onclick=()=>clearExercises(day));
   });
 }
 function renderBuilderDay(day,open){
@@ -194,7 +195,7 @@ function renderBuilderDay(day,open){
     <div class="muscles">${MUSCLES.map(m=>`<button class="muscle-chip ${d.muscles.includes(m)?"selected":""}" data-muscle="${esc(m)}">${d.muscles.includes(m)?"✓ ":""}${esc(m)}</button>`).join("")}</div>
     ${d.muscles.map(m=>renderPicker(day,m,"")).join("")}
     <div class="selected-list">${d.exercises.length?d.exercises.map((e,idx)=>renderSelectedItem(day,e.id,idx)).join(""):"<div class='empty'>Nenhum exercício selecionado ainda.</div>"}</div>
-    <div class="save-row"><button class="btn primary" data-save-day>💾 Salvar ${day}</button><button class="btn" data-go-ficha="${day}">📋 Ver ficha</button><button class="btn danger" data-clear-day>🗑 Remover tudo</button></div>
+    <div class="save-row"><button class="btn primary" data-save-day>💾 Salvar ${day}</button><button class="btn" data-go-ficha="${day}">📋 Ver ficha</button><button class="btn danger" data-clear-exercises>✕ Eliminar exercícios</button><button class="btn danger" data-clear-day>🗑 Limpar dia</button></div>
   </details>`;
 }
 function renderPicker(day,muscle,query){
@@ -224,6 +225,11 @@ function removeExercise(day,id){state.days[day].exercises=state.days[day].exerci
 function clearDay(day){
   if(!confirm('Remover todos os músculos e exercícios de '+day+'?'))return;
   state.days[day].muscles=[];state.days[day].exercises=[];saveState();renderBuilder();renderFicha();toast(day+' foi limpo.');
+}
+function clearExercises(day){
+  if(!state.days[day].exercises.length){toast('Não há exercícios para eliminar.');return;}
+  if(!confirm('Eliminar todos os exercícios de '+day+' e manter os músculos selecionados?'))return;
+  state.days[day].exercises=[];saveState();renderBuilder();renderFicha();toast('Exercícios de '+day+' eliminados.');
 }
 function moveExercise(day,id,dir){
   const a=state.days[day].exercises,i=a.findIndex(e=>e.id===id),j=i+dir;if(i<0||j<0||j>=a.length)return;
@@ -303,10 +309,9 @@ function setupPromptGenerator(){
   const form=document.getElementById('promptForm');
   if(!form)return;
   document.getElementById('promptDays').innerHTML=DAYS.map(day=>`<label><input type="checkbox" name="days" value="${esc(day)}" checked> ${esc(day)}</label>`).join('');
-  document.getElementById('promptMuscles').innerHTML=MUSCLES.filter(muscle=>muscle!=='Cardio').map(muscle=>`<label><input type="checkbox" name="promptMuscles" value="${esc(muscle)}"> ${esc(muscle)}</label>`).join('');
+  document.getElementById('promptMuscles').innerHTML=MUSCLES.map(muscle=>`<label><input type="checkbox" name="promptMuscles" value="${esc(muscle)}"> ${esc(muscle)}</label>`).join('');
   form.addEventListener('submit',event=>{event.preventDefault();generatePrompt();toast('Documento gerado.');});
   document.getElementById('applyPromptWorkout').onclick=applyPromptWorkout;
-  document.getElementById('useCurrentWorkout').onclick=useCurrentWorkout;
   document.getElementById('copyPrompt').onclick=async()=>{generatePrompt();const output=document.getElementById('promptOutput');try{await navigator.clipboard.writeText(output.value);}catch{output.select();document.execCommand('copy');}toast('Documento copiado.');};
   document.getElementById('downloadPrompt').onclick=()=>{generatePrompt();const blob=new Blob([document.getElementById('promptOutput').value],{type:'text/markdown;charset=utf-8'});const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='prompt-gerador-de-treino.md';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Documento baixado.');};
   generatePrompt();
@@ -317,30 +322,20 @@ function applyPromptWorkout(){
   const days=data.getAll('days'), muscles=data.getAll('promptMuscles');
   const count=Math.max(1,Math.min(10,Number(data.get('exerciseCount'))||3));
   const cardioMinutes=Math.max(0,Math.min(1440,Number(data.get('cardioMinutes'))||0));
+  const wantsCardio=muscles.includes('Cardio');
   if(!days.length||!muscles.length){toast('Escolha pelo menos um dia e um músculo.');return;}
   if(!confirm('Aplicar este treino e substituir os exercícios dos dias escolhidos?'))return;
   const selectedDays=days.map(day=>state.days[day]).filter(Boolean);
   selectedDays.forEach(day=>{day.muscles=[];day.exercises=[];});
   muscles.forEach((muscle,index)=>{
+    if(muscle==='Cardio')return;
     const day=selectedDays[index%selectedDays.length];
     day.muscles.push(muscle);
     CATALOG.filter(exercise=>exercise.muscle===muscle).slice(0,count).forEach(exercise=>day.exercises.push(createExercise(exercise.id,muscle)));
   });
-  if(cardioMinutes>0)selectedDays.forEach(day=>{day.muscles.push('Cardio');day.exercises.push({...createExercise('cardio-walking-on-incline-treadmill','Cardio'),duration:String(cardioMinutes)});});
+  if(wantsCardio&&cardioMinutes>0)selectedDays.forEach(day=>{day.muscles.push('Cardio');day.exercises.push({...createExercise('cardio-walking-on-incline-treadmill','Cardio'),duration:String(cardioMinutes)});});
   selectedDays.forEach(day=>{day.muscles=[...new Set(day.muscles)];});
   saveState();renderFicha();renderBuilder();switchView('fichaView');toast('Treino aplicado à sua ficha.');
-}
-
-function useCurrentWorkout(){
-  const form=document.getElementById('promptForm');
-  const activeDays=DAYS.filter(day=>state.days[day].exercises.length||state.days[day].muscles.length);
-  const muscles=[...new Set(activeDays.flatMap(day=>state.days[day].muscles))].filter(muscle=>muscle!=='Cardio');
-  const exercises=[...new Set(activeDays.flatMap(day=>state.days[day].exercises.map(item=>BY_ID[item.id]?.name).filter(Boolean)))];
-  form.querySelectorAll('input[name="days"]').forEach(input=>{input.checked=activeDays.includes(input.value);});
-  form.querySelectorAll('input[name="promptMuscles"]').forEach(input=>{input.checked=muscles.includes(input.value);});
-  form.elements.required.value=exercises.join(', ');
-  generatePrompt();
-  toast(activeDays.length?'Seu treino foi incluído no documento.':'Sua ficha ainda está vazia.');
 }
 
 function openAddModal(id){
