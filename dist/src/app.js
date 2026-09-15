@@ -181,6 +181,12 @@ function renderBuilder(){
     });
     el.querySelectorAll(".pick-add").forEach(btn=>btn.onclick=()=>{addExercise(day,btn.dataset.id,btn.closest('[data-picker]').dataset.picker);saveState();renderBuilder();toast("Exercício adicionado.");});
     el.querySelectorAll(".pick-remove").forEach(btn=>btn.onclick=()=>{removeExercise(day,btn.dataset.id);saveState();renderBuilder();});
+    el.querySelectorAll('.pick-card').forEach(card=>card.onclick=event=>{
+      if(event.target.closest('a,input,button'))return;
+      const id=card.dataset.id,muscle=card.closest('[data-picker]').dataset.picker;
+      if(state.days[day].exercises.some(exercise=>exercise.id===id))removeExercise(day,id);else addExercise(day,id,muscle);
+      saveState();renderBuilder();
+    });
     el.querySelectorAll(".move-up").forEach(btn=>btn.onclick=()=>moveExercise(day,btn.dataset.id,-1));
     el.querySelectorAll(".move-down").forEach(btn=>btn.onclick=()=>moveExercise(day,btn.dataset.id,1));
     el.querySelectorAll("[data-save-day]").forEach(btn=>btn.onclick=()=>{saveState();toast(day+" salvo na sua ficha.");});
@@ -200,14 +206,14 @@ function renderBuilderDay(day,open){
 }
 function renderPicker(day,muscle,query){
   const d=state.days[day], selected=new Set(d.exercises.map(e=>e.id));
-  const arr=CATALOG.filter(x=>belongsTo(x,muscle) && (!query||x.name.toLowerCase().includes(query.toLowerCase())));
+  const arr=CATALOG.filter(x=>belongsTo(x,muscle) && (!query||x.name.toLowerCase().includes(query.toLowerCase()))).sort((a,b)=>Number(selected.has(b.id))-Number(selected.has(a.id)));
   return `<div class="exercise-picker open" data-picker="${esc(muscle)}">
     <div class="picker-head"><h4>${esc(muscle)}</h4><span class="selected-mark">${d.exercises.filter(e=>e.muscle===muscle).length} selecionado(s)</span></div>
     <input class="picker-search" data-muscle="${esc(muscle)}" placeholder="🔎 Pesquisar em ${esc(muscle)}..." value="${esc(query)}">
-    <div class="picker-grid">${arr.map(x=>`<div class="pick-card">
+    <div class="picker-grid">${arr.map(x=>`<div class="pick-card ${selected.has(x.id)?'selected':''}" data-id="${esc(x.id)}">
       <div class="pick-media">${x.gif?`<img loading="lazy" src="${esc(x.gif || "/public/media-unavailable.svg")}" alt="Execução: ${esc(x.name)}">`:"<div class='empty' style='border:0;border-radius:0;height:100%;display:flex;align-items:center'>GIF não disponível no material atual</div>"}</div>
       <div class="pick-body"><strong>${esc(x.name)}</strong><p>${esc(x.description)}</p>${mediaDetails(x)}<div class="meta"><span class="tag">🔧 ${esc(x.equipment)}</span></div>
-      <div class="pick-actions">${selected.has(x.id)?`<button class="btn danger pick-remove" data-id="${esc(x.id)}">Remover</button>`:`<button class="btn primary pick-add" data-id="${esc(x.id)}">+ Adicionar</button>`}<span class="selected-mark">${selected.has(x.id)?"✓ selecionado":""}</span></div></div>
+      <div class="pick-actions"><span class="selected-mark">${selected.has(x.id)?"✓ selecionado":"Clique para selecionar"}</span></div></div>
     </div>`).join("")||"<div class='empty'>Nenhum exercício encontrado.</div>"}</div>
   </div>`;
 }
