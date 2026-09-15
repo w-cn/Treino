@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "days": {
+    "Segunda": { "muscles": [], "exercises": [] },
+    "Terça": { "muscles": [], "exercises": [] },
+    "Quarta": { "muscles": [], "exercises": [] },
+    "Quinta": { "muscles": [], "exercises": [] },
+    "Sexta": { "muscles": [], "exercises": [] }
+  },
+  "history": []
+}

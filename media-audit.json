@@ -1,0 +1,623 @@
+{
+  "checkedAt": "2026-09-15T13:37:43.133Z",
+  "results": [
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-inclinada.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-simultanea.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-concentrada.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-direta-polia.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-direta.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-alternada.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/04/dumbbell-hammer-curl-v-2.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-scott.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-spider.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/chinup-1.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-arrastada.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-zottman.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2025/01/triceps-na-polia-com-barra-reta.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2025/01/triceps-corda-na-polia-alta.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2025/01/triceps-frances-com-um-halter-sentado.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2025/01/supino-fechado-com-barra.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2025/01/triceps-invertido.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2025/01/paralelas-para-triceps-com-carga.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2025/01/flexao-diamante.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2025/01/triceps-banco.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2025/01/triceps-coice.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/10/dumbbell-lying-triceps-extension.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/04/barbell-bench-press.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/09/barbell-incline-bench-press.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2018/09/barbell-decline-bench-press.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/08/crucifixo-crossover-alto.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/09/dumbbell-fly.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/04/lever-chest-press-.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/09/lever-seated-fly.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/09/chest-dip-on-dippullup-cage.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/03/desenvolvimento-com-barra-sentado.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/09/dumbbell-seated-shoulder-press.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/11/dumbbell-arnold-press.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/11/dumbbell-lateral-raise.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/12/cable-one-arm-lateral-raise.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/11/dumbbell-front-raise.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/03/barbell-front-raise.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2018/03/crucifixo-invertido-com-halteres.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/03/barbell-widegrip-upright-row.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/05/Face-Pull.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/05/pullup.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/01/dumbbell-upright-row.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/05/barbell-bent-over-row.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/05/cable-pulldown.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/09/dumbbell-one-arm-bentover-row.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/05/pulldown.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/05/cable-straight-back-seated-row.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/05/t-bar-row-remada-cavalinho.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/01/dumbbell-shrug.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2018/03/lever-seated-reverse-fly-parallel-grip.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/abdominal-reto.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/abdominal-na-polia.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/Abdominal-infra-nas-paralelas.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/abdominal-maquina.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/Abdominal-tesoura.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/Abdominal-infra-solo.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/Abdominal-cruzado.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/abdominal-roda.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/Abdominal-declinado.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/abdominal-remador.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://c.tenor.com/ft6FHrqty-8AAAAd/tenor.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/Abdominal-lateral.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/12/abdominal-infra-solo2.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/06/agachamento-bulgaro.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/09/front-squat.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/07/barbell-high-bar-squat.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2018/01/sled-45%D0%B2-leg-press-side-pov.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/03/sled-hack-squat.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/07/Barbell-Romanian-Deadlift.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/11/dumbbell-goblet-squat.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/12/dumbbell-stiff-leg-deadlift.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/12/dumbbell-lunge.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2022/12/gif-hip-thrust.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/11/lever-leg-extension.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/04/lever-lying-leg-curl.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/12/nordic-curl.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/03/barbell-sumo-deadlift.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/09/barbell-good-morning.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/07/smith-sumo-squat.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/03/lever-standing-calf-raise.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/09/sled-calf-press-on-leg-press.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/07/standing-calf-raise-on-a-staircase.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/09/barbell-standing-calf-raise.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2018/10/lever-seated-calf-raise-.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2018/10/dumbbell-seated-one-leg-calf-raise-hammer-grip.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2018/03/encolhimento-por-tras-do-corpo-no-smith.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2018/03/remada-em-pe-com-barra.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/plank.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2018/03/levantamento-terra-com-barra.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2018/03/depressao-escapular-na-puxada.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2018/03/elevacao-em-y-com-halteres-banco-inclinado.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/12/suspensao-na-barra-dead-hang.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2018/02/rosca-punho-inversa.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2018/02/rosca-invertida-com-barra.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/12/rusca-punho-com-barra.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/12/rolo-de-punho.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/06/coice.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/cardio/run.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/cardio/walking-on-stepmill.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/cardio/stationary-bike-walk.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/cardio/walk-elliptical-cross-trainer.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/cardio/walking-on-incline-treadmill.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/cardio/jump-rope.gif",
+      "status": 200,
+      "type": "image/gif",
+      "ok": true
+    }
+  ]
+}

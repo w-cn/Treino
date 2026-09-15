@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07101d">
+<title>Meu Treino — Ficha + Biblioteca</title>
+<style>
+:root{
+  --bg:#070d16;--panel:#0d1726;--panel2:#111f31;--line:#25364e;
+  --text:#f5f8fc;--muted:#9eacc0;--blue:#58b9ff;--blue2:#1679d3;
+  --green:#53e39a;--red:#ff7070;--yellow:#ffd166;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:radial-gradient(circle at top,#152844 0,#070d16 52%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+button,input{font:inherit}
+button{cursor:pointer}
+.app{max-width:980px;margin:auto;padding:12px 12px 50px}
+header{background:rgba(13,23,38,.94);border:1px solid var(--line);border-radius:20px;padding:18px;margin-bottom:10px}
+h1{font-size:25px;margin:0 0 4px}
+.sub{color:var(--muted);font-size:12px;line-height:1.45;margin:0}
+.topstats{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.pill{border:1px solid var(--line);background:#101d2d;border-radius:999px;padding:6px 9px;color:#b9c7d8;font-size:10px}
+.main-tabs{position:sticky;top:0;z-index:20;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:7px 0;background:#070d16ee;backdrop-filter:blur(12px)}
+.main-tab{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:12px;padding:11px 6px;font-weight:800;font-size:12px}
+.main-tab.active{background:#123454;color:var(--blue);border-color:#327fb8}
+.view{display:none}.view.active{display:block}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0}
+.section-head h2{font-size:19px;margin:0}.section-head p{font-size:11px;color:var(--muted);margin:3px 0 0}
+.day-tabs{display:flex;gap:6px;overflow:auto;padding:4px 0 9px}
+.day-tab{min-width:72px;border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:11px;padding:9px 7px;font-weight:800;font-size:10px}
+.day-tab.active{background:#123454;color:var(--blue);border-color:#327fb8}
+.day-panel{display:none}.day-panel.active{display:block}
+.day-title{background:linear-gradient(135deg,#122844,#0d1726);border:1px solid var(--line);border-radius:16px;padding:13px;margin-bottom:9px}
+.day-title h3{margin:0;font-size:18px}.day-title p{margin:4px 0 0;color:var(--muted);font-size:11px}
+.muscle-group{margin:9px 0}
+.muscle-title{font-size:11px;color:#9ed8ff;text-transform:uppercase;letter-spacing:.08em;margin:11px 2px 6px}
+.exercise-card{border:1px solid var(--line);background:rgba(13,23,38,.96);border-radius:15px;margin:8px 0;overflow:hidden;transition:.2s}
+.exercise-card.done{border-color:#27684d;background:#0c2118}
+.exercise-card.done .card-title{text-decoration:line-through;text-decoration-color:#53e39a}
+.card-main{display:grid;grid-template-columns:minmax(0,1fr) 128px;gap:10px;padding:11px}
+.card-info{min-width:0}.eyebrow{font-size:9px;color:var(--blue);text-transform:uppercase;letter-spacing:.08em}
+.card-title{font-size:15px;font-weight:800;margin:3px 0}.card-desc{font-size:10px;color:#bdc9d8;line-height:1.4;margin:5px 0}
+.media{width:128px;height:128px;border-radius:11px;overflow:hidden;background:#060b13;border:1px solid var(--line);display:flex;align-items:center;justify-content:center}
+.media img{width:100%;height:100%;object-fit:contain;display:block}
+.media.missing:after{content:"GIF indisponível";font-size:9px;color:#7e8ca0;text-align:center;padding:8px}
+.meta{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}.tag{font-size:9px;border:1px solid #294662;background:#102237;border-radius:999px;padding:4px 6px;color:#b7d9f4}
+.fields{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:0 11px 9px}
+.field label{display:block;color:var(--muted);font-size:9px}.field input{width:100%;margin-top:3px;padding:8px 6px;background:#08111d;color:var(--text);border:1px solid var(--line);border-radius:8px;font-size:11px}
+.controls{display:flex;align-items:center;flex-wrap:wrap;gap:6px;padding:0 11px 11px}
+.btn{border:1px solid var(--line);background:#0c1725;color:var(--text);border-radius:9px;padding:8px 10px;font-size:10px;font-weight:800}
+.btn.primary{background:#1268b3;border-color:#2689dd}.btn.done-btn{color:#8ff0bc}.btn.danger{color:#ff9898}
+.timer{font-variant-numeric:tabular-nums;font-weight:900;color:#bfe5ff;min-width:48px}
+.note-row{padding:0 11px 11px}.note-row input{width:100%;padding:8px;background:#08111d;border:1px solid var(--line);border-radius:8px;color:var(--text);font-size:10px}
+.suggestions{border:1px dashed #31516d;border-radius:15px;padding:12px;margin-top:12px;background:#0b1421}
+.suggestions h3{margin:0 0 3px;font-size:14px}.suggestions p{font-size:10px;color:var(--muted);margin:0 0 8px}
+.suggestion-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.suggestion{border:1px solid var(--line);background:#101c2b;border-radius:11px;overflow:hidden}
+.suggestion img{width:100%;height:100px;object-fit:contain;background:#070c13;display:block}
+.suggestion-body{padding:7px}.suggestion strong{font-size:10px;display:block}.suggestion small{display:block;color:var(--muted);font-size:9px;margin:3px 0 6px}
+.builder{background:rgba(13,23,38,.96);border:1px solid var(--line);border-radius:16px;padding:13px}
+.builder-day{border:1px solid var(--line);background:#0b1421;border-radius:14px;margin:9px 0;padding:10px}
+.builder-day summary{cursor:pointer;font-weight:800;font-size:13px}.builder-day summary::marker{color:var(--blue)}
+.muscles{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0}
+.muscle-chip{border:1px solid var(--line);background:#101c2b;color:#aebbd0;border-radius:999px;padding:7px 9px;font-size:10px}
+.muscle-chip.selected{background:#123b5b;color:#bce5ff;border-color:#3386bc}
+.exercise-picker{display:none;margin-top:10px;border-top:1px solid var(--line);padding-top:10px}.exercise-picker.open{display:block}
+.picker-head{display:flex;justify-content:space-between;gap:8px;align-items:center}.picker-head h4{margin:0;font-size:13px}.picker-search{width:100%;margin:8px 0;padding:9px;background:#07101a;border:1px solid var(--line);border-radius:9px;color:var(--text);font-size:11px}
+.picker-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.pick-card{border:1px solid var(--line);background:#0f1b2a;border-radius:12px;overflow:hidden}
+.pick-media{height:150px;background:#060b13}.pick-media img{width:100%;height:100%;object-fit:contain;display:block}
+.pick-body{padding:8px}.pick-body strong{font-size:11px;display:block}.pick-body p{font-size:9px;color:var(--muted);line-height:1.35;margin:4px 0}.pick-actions{display:flex;gap:5px;align-items:center}.pick-actions .btn{flex:1}.selected-mark{font-size:9px;color:var(--green);font-weight:800}
+.selected-list{margin-top:10px}.selected-item{display:flex;align-items:center;gap:7px;padding:7px;border:1px solid var(--line);border-radius:9px;background:#101c2b;margin:5px 0}
+.selected-item img{width:45px;height:45px;object-fit:contain;background:#070c13;border-radius:7px}.selected-item span{font-size:10px;flex:1}.order-btn{padding:6px 7px;font-size:9px}
+.save-row{display:flex;gap:7px;margin-top:10px}.save-row .btn{flex:1}
+.library-controls{display:flex;gap:7px;margin-bottom:9px}.library-controls input{flex:1;padding:10px;background:#0a1320;border:1px solid var(--line);border-radius:10px;color:var(--text);font-size:11px}
+.catalog-filter{display:flex;gap:6px;overflow:auto;padding-bottom:8px}.catalog-filter button{white-space:nowrap}
+.catalog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.lib-card{border:1px solid var(--line);background:#0d1827;border-radius:13px;overflow:hidden}
+.lib-card img{width:100%;height:160px;object-fit:contain;background:#060b13;display:block}
+.lib-body{padding:8px}.lib-body strong{font-size:11px;display:block}.lib-body p{font-size:9px;line-height:1.35;color:var(--muted);margin:4px 0}.lib-meta{display:flex;gap:4px;flex-wrap:wrap;margin:5px 0}.lib-actions{display:flex;gap:5px}.source{font-size:9px;color:#8ed2ff;text-decoration:none;padding:7px 8px;border:1px solid var(--line);border-radius:8px}.empty{padding:18px;text-align:center;color:var(--muted);font-size:11px;border:1px dashed var(--line);border-radius:12px}
+.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#102337;border:1px solid #3978a7;color:#d9efff;border-radius:10px;padding:9px 13px;font-size:11px;z-index:100;opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1}
+.modal{position:fixed;inset:0;background:#000b;z-index:80;display:none;align-items:flex-end;justify-content:center;padding:10px}.modal.open{display:flex}.sheet{width:min(720px,100%);max-height:88vh;overflow:auto;background:#0c1624;border:1px solid #30445e;border-radius:18px;padding:14px}.sheet-head{display:flex;justify-content:space-between;align-items:center}.sheet h3{margin:0;font-size:16px}
+@media(max-width:760px){.catalog-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){
+ .app{padding:7px 7px 45px}header{padding:14px;border-radius:15px}h1{font-size:21px}
+ .card-main{grid-template-columns:minmax(0,1fr) 104px}.media{width:104px;height:104px}
+ .fields{grid-template-columns:repeat(2,1fr)}.suggestion-grid{grid-template-columns:1fr}
+ .picker-grid{grid-template-columns:1fr}.pick-media{height:190px}.catalog-grid{grid-template-columns:1fr}
+ .lib-card img{height:210px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <h1>🏋️ Meu Treino</h1>
+  <p class="sub">Monte seus dias, escolha os músculos e exercícios com GIFs e depois execute a ficha mantendo carga, repetições, descanso e histórico no navegador.</p>
+  <div class="topstats">
+    <span class="pill">💾 Salvo no navegador</span>
+    <span class="pill">📈 Progressão de carga</span>
+    <span class="pill">⏱️ Cronômetro de descanso</span>
+    <span class="pill">🎞️ GIF + descrição</span>
+  </div>
+</header>
+
+<nav class="main-tabs">
+  <button class="main-tab active" data-view="fichaView">📋 Minha Ficha</button>
+  <button class="main-tab" data-view="treinoView">🏋️ Meu Treino</button>
+  <button class="main-tab" data-view="bibliotecaView">📚 Biblioteca</button>
+</nav>
+
+<section id="fichaView" class="view active">
+  <div class="section-head"><div><h2>Minha Ficha</h2><p>Execute os exercícios. Ao concluir, ele vai para o final da fila.</p></div></div>
+  <div id="fichaDayTabs" class="day-tabs"></div>
+  <div id="fichaDays"></div>
+</section>
+
+<section id="treinoView" class="view">
+  <div class="section-head"><div><h2>Meu Treino</h2><p>Escolha o dia → músculos → exercícios. A ficha é gerada automaticamente.</p></div></div>
+  <div class="builder" id="builder"></div>
+</section>
+
+<section id="bibliotecaView" class="view">
+  <div class="section-head"><div><h2>Biblioteca de Exercícios</h2><p>Catálogo completo do material já presente no seu HTML, com os GIFs disponíveis e fonte de referência.</p></div></div>
+  <div class="library-controls"><input id="librarySearch" placeholder="🔎 Pesquisar exercício..."></div>
+  <div id="catalogFilter" class="catalog-filter"></div>
+  <div id="catalogGrid" class="catalog-grid"></div>
+</section>
+</div>
+
+<div id="toast" class="toast"></div>
+<div id="imageModal" class="modal"><div class="sheet"><div class="sheet-head"><h3 id="modalTitle"></h3><button class="btn" id="modalClose">Fechar</button></div><div id="modalContent" style="margin-top:10px"></div></div></div>
+
+<script>
+
+const FULL_CATALOG={
+ 'Bíceps':{
+  source:'https://www.hipertrofia.org/blog/2019/04/17/exercicios-para-biceps/',
+  items:[['Rosca direta com barra reta ou W','Barra','https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-direta.gif','Coloque no início do treino; mantenha o corpo estável e controle a subida e a descida.'],['Rosca simultânea','Halteres','https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-simultanea.gif','Flexione os cotovelos com os dois halteres ao mesmo tempo, mantendo a execução controlada.'],['Rosca direta na polia','Polia','https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-direta-polia.gif','Faça a flexão dos cotovelos contra a resistência da polia, sem usar impulso.'],['Rosca concentrada','Halter','https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-concentrada.gif','Apoie o braço e faça a rosca concentrando o movimento no cotovelo.'],['Rosca inclinada','Halteres','','Sente-se no banco inclinado, mantenha os cotovelos atrás do tronco e controle a amplitude.'],['Rosca spider','Halteres','','Com o peito apoiado, faça a flexão dos cotovelos sem tirar o foco do bíceps.'],['Rosca alternada','Halteres','https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-alternada.gif','Faça um braço por vez, controlando a descida e evitando balanço.'],['Chin up','Peso corporal','','Puxe o corpo com pegada supinada até ultrapassar a barra e desça controladamente.'],['Rosca Scott','Banco/máquina','','Apoie os braços no banco Scott e flexione os cotovelos mantendo o braço apoiado.'],['Rosca martelo','Halteres','https://www.hipertrofia.org/blog/wp-content/uploads/2023/04/dumbbell-hammer-curl-v-2.gif','Use pegada neutra e flexione os cotovelos sem balançar o tronco.'],['Rosca arrastada (drag curl)','Barra','','Puxe a barra mantendo-a próxima ao corpo e levando os cotovelos para trás.'],['Rosca Zottman','Halteres','','Suba com pegada supinada e controle a descida com pegada pronada.']]
+ },
+ 'Tríceps':{source:'https://www.hipertrofia.org/blog/exercicios-de-musculacao/exercicios-para-triceps/',items:[['Tríceps corda','Polia','https://www.hipertrofia.org/blog/wp-content/uploads/2025/01/triceps-corda-na-polia-alta.gif','Polia alta, cotovelos junto ao corpo, estenda os braços e retorne lentamente.'],['Tríceps francês','Halter','https://www.hipertrofia.org/blog/wp-content/uploads/2025/01/triceps-frances-com-um-halter-sentado.gif','Com os braços acima da cabeça, flexione os cotovelos levando o peso atrás da cabeça.'],['Tríceps com barra reta ou W','Polia','https://www.hipertrofia.org/blog/wp-content/uploads/2025/01/triceps-na-polia-com-barra-reta.gif','Mantenha os cotovelos fixos e estenda os braços para baixo.'],['Supino fechado','Barra','https://www.hipertrofia.org/blog/wp-content/uploads/2024/06/close-grip-bench-press.gif','Use pegada fechada e desça a barra controladamente, mantendo os cotovelos sob controle.'],['Tríceps invertido','Polia','','Use pegada pronada/invertida e mantenha os cotovelos próximos ao corpo.'],['Paralelas','Peso corporal','','Desça e suba controlando o corpo, mantendo o foco na extensão dos cotovelos.'],['Flexão diamante','Peso corporal','','Mãos próximas formando um losango; mantenha o corpo alinhado e empurre o chão.'],['Tríceps banco','Peso corporal','','Desça o quadril controladamente e estenda os cotovelos para retornar.'],['Tríceps coice','Halter','https://www.hipertrofia.org/blog/wp-content/uploads/2025/01/triceps-coice.gif','Com o tronco inclinado, estenda o cotovelo para trás sem movimentar o braço.'],['Rosca testa','Barra/halteres','https://www.hipertrofia.org/blog/wp-content/uploads/2023/10/dumbbell-lying-triceps-extension.gif','Deitado, flexione os cotovelos levando a carga em direção à testa/cabeça e estenda novamente.']]},
+ 'Peito':{source:'https://www.hipertrofia.org/blog/2017/12/26/exercicios-para-peito/',items:[['Supino inclinado','Barra','https://www.hipertrofia.org/blog/wp-content/uploads/2024/04/barbell-incline-bench-press.gif','Banco entre 30–45°, desça a barra ao peito e empurre mantendo controle.'],['Supino reto','Barra','https://www.hipertrofia.org/blog/wp-content/uploads/2024/04/barbell-bench-press.gif','Pés firmes, barra desce ao peito e sobe até a extensão dos braços, sem perder a postura.'],['Supino declinado (canadense)','Barra','','No banco declinado, desça a barra ao peito e empurre controladamente.'],['Crucifixo','Halteres','https://www.hipertrofia.org/blog/wp-content/uploads/2023/09/dumbbell-fly.gif','Braços abertos com leve flexão dos cotovelos; aproxime os halteres em arco e retorne.'],['Crossover','Polia','https://www.hipertrofia.org/blog/wp-content/uploads/2024/08/crucifixo-crossover-alto.gif','Polias altas, braços abertos e cotovelos levemente flexionados; feche os braços à frente do corpo.'],['Supino máquina','Máquina','https://www.hipertrofia.org/blog/wp-content/uploads/2024/04/lever-chest-press-.gif','Empurre as alças mantendo costas apoiadas e retorne controladamente.'],['Voador/Peck deck','Máquina','https://www.hipertrofia.org/blog/wp-content/uploads/2023/09/lever-seated-fly.gif','Aproxime os braços à frente do peito e retorne sem perder o controle.'],['Paralelas para peito','Peso corporal','https://www.hipertrofia.org/blog/wp-content/uploads/2023/09/chest-dip-on-dippullup-cage.gif','Desça o corpo controladamente e empurre nas barras paralelas, inclinando o tronco para maior ênfase no peito.']]},
+ 'Deltoides':{source:'https://www.hipertrofia.org/blog/2024/09/07/exercicios-para-ombros/',items:[['Desenvolvimento com barra','Barra','','Empurre a barra acima da cabeça mantendo tronco firme e retorne controladamente.'],['Desenvolvimento com halteres','Halteres','https://www.hipertrofia.org/blog/wp-content/uploads/2023/09/dumbbell-seated-shoulder-press.gif','Halteres na altura dos ombros; empurre para cima e retorne sem perder a postura.'],['Desenvolvimento Arnold','Halteres','','Comece com palmas voltadas para você e gire enquanto leva os halteres acima da cabeça.'],['Elevação lateral com halteres','Halteres','https://www.hipertrofia.org/blog/wp-content/uploads/2023/11/dumbbell-lateral-raise.gif','Eleve os braços lateralmente até a altura dos ombros, controlando a descida.'],['Elevação lateral na polia','Polia','','Eleve o braço lateralmente mantendo o tronco estável e tensão constante.'],['Elevação frontal com halteres','Halteres','https://www.hipertrofia.org/blog/wp-content/uploads/2023/11/dumbbell-front-raise.gif','Eleve os halteres à frente até a altura dos ombros e desça lentamente.'],['Elevação frontal com barra','Barra','','Levante a barra à frente até a altura dos ombros sem balançar o corpo.'],['Crucifixo inverso','Halteres/máquina','','Abra os braços para trás com controle, enfatizando o deltoide posterior.'],['Face pull','Polia/corda','https://www.hipertrofia.org/blog/wp-content/uploads/2024/05/Face-Pull.gif','Puxe a corda em direção ao rosto mantendo cotovelos altos e controlando o retorno.'],['Remada alta com barra','Barra','','Pegada larga; puxe a barra até altura confortável, sem forçar o ombro.'],['Remada alta com halteres','Halteres','','Puxe os halteres verticalmente com cotovelos altos, dentro de uma amplitude confortável.']]},
+ 'Costas':{source:'https://www.hipertrofia.org/blog/2019/05/05/exercicios-para-costas/',items:[['Barra-fixa','Peso corporal','','Puxe o corpo até o queixo passar da barra, sem balançar, e desça controladamente.'],['Pulley costas / puxada alta','Polia','https://www.hipertrofia.org/blog/wp-content/uploads/2019/05/cable-pulldown.gif','Incline levemente o tronco e puxe a barra em direção ao peito mantendo cotovelos para baixo.'],['Remada curvada','Barra','https://www.hipertrofia.org/blog/wp-content/uploads/2024/05/barbell-bent-over-row.gif','Tronco inclinado e coluna neutra; puxe a barra em direção à parte inferior do peito.'],['Remada serrote','Halter','https://www.hipertrofia.org/blog/wp-content/uploads/2023/09/dumbbell-one-arm-bentover-row.gif','Apoie mão e joelho no banco e puxe o halter em direção ao quadril sem girar o tronco.'],['Pulldown','Polia','https://www.hipertrofia.org/blog/wp-content/uploads/2019/05/pulldown.gif','Com braços estendidos, puxe o cabo para baixo usando principalmente os dorsais.'],['Remada baixa','Polia','https://www.hipertrofia.org/blog/wp-content/uploads/2024/05/cable-straight-back-seated-row.gif','Sentado, puxe o cabo ao abdômen mantendo tronco estável e controlando o retorno.'],['Remada cavalinho','Barra/máquina','','Puxe a carga em direção ao abdômen, mantendo o tronco estável.'],['Barra fixa supinada','Peso corporal','https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/chinup-1.gif','Use pegada supinada e puxe o corpo até ultrapassar a barra.'],['Encolhimento','Barra/halteres','','Eleve os ombros verticalmente, segure a contração e desça sem girar os ombros.'],['Voador invertido','Máquina/halteres','','Abra os braços para trás com controle, mantendo o foco na parte posterior dos ombros e costas.'],['Remada na máquina (articulada)','Máquina','https://www.hipertrofia.org/blog/wp-content/uploads/2019/05/remada-articulada.jpg','Peito apoiado, braços estendidos; puxe as alças em direção ao peito sem balançar o tronco.']]},
+ 'Abdômen':{source:'https://www.hipertrofia.org/blog/2017/09/21/exercicios-para-abdomen/',items:[['Abdominal reto (tradicional)','Peso corporal','https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/abdominal-reto.gif','Flexione a coluna apenas o suficiente para tirar os ombros do chão, concentrando a contração no abdômen.'],['Abdominal na polia','Polia','','Com a polia alta, flexione o tronco puxando a carga para baixo de forma controlada.'],['Abdominal infra nas paralelas','Peso corporal','https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/Abdominal-infra-nas-paralelas.gif','Eleve as pernas mantendo o corpo estável e evite balanço.'],['Prancha abdominal','Peso corporal','','Mantenha o corpo alinhado e contraia o core para estabilizar a coluna.'],['Abdominal na máquina','Máquina','https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/abdominal-maquina.gif','Flexione o tronco contra a resistência da máquina, controlando ida e volta.'],['Abdominal tesoura','Peso corporal','','Alterne as pernas de forma controlada mantendo o abdômen contraído.'],['Abdominal remador','Peso corporal','','Combine flexão do tronco e aproximação das pernas de forma controlada.'],['Abdominal infra solo (abdominal inverso)','Peso corporal','','Eleve o quadril do chão aproximando os joelhos do tronco sem usar impulso.'],['Abdominal cruzado','Peso corporal','','Faça a flexão do tronco aproximando cotovelo e joelho opostos.'],['Roda abdominal','Roda','','Deslize a roda à frente mantendo o core firme e retorne sem perder o alinhamento.'],['Abdominal declinado','Peso corporal','','Em banco declinado, flexione o tronco controlando a amplitude.'],['Abdominal lateral','Peso corporal','','Flexione lateralmente o tronco com controle, enfatizando os oblíquos.'],['Abdominal invertido','Peso corporal','','Eleve o quadril/pernas de forma controlada, mantendo a lombar sob controle.']]},
+ 'Pernas':{source:'https://www.hipertrofia.org/blog/2024/07/24/exercicios-para-pernas/',items:[['Agachamento livre','Barra','https://www.hipertrofia.org/blog/wp-content/uploads/2024/07/barbell-high-bar-squat.gif','Barra nos ombros, desça mantendo peito erguido e coluna neutra, depois suba controladamente.'],['Agachamento frontal','Barra','','Barra à frente dos ombros; agache mantendo o tronco firme e retorne.'],['Agachamento búlgaro','Halteres','','Um pé apoiado atrás; desça controlando a perna da frente e retorne.'],['Leg press','Máquina','https://www.hipertrofia.org/blog/wp-content/uploads/2018/01/sled-45%D0%B2-leg-press-side-pov.gif','Pés na plataforma; empurre sem travar os joelhos e controle a descida.'],['Agachamento hack','Máquina','','Com ombros apoiados, desça controladamente e empurre a plataforma.'],['Stiff','Barra/halteres','https://www.hipertrofia.org/blog/wp-content/uploads/2023/12/dumbbell-stiff-leg-deadlift.gif','Quadris para trás, joelhos levemente flexionados e coluna neutra; desça até alongar posteriores.'],['Levantamento terra romeno','Barra','','Mantenha a barra próxima ao corpo, leve quadris para trás e retorne contraindo glúteos.'],['Agachamento goblet','Halter','https://www.hipertrofia.org/blog/wp-content/uploads/2023/11/dumbbell-goblet-squat.gif','Segure o peso à frente do peito e agache mantendo o tronco ereto.'],['Afundo','Halteres','','Dê um passo e desça até formar ângulos próximos de 90°, depois retorne.'],['Elevação pélvica com barra','Barra','','Costas apoiadas no banco; eleve os quadris e contraia os glúteos no topo.'],['Cadeira extensora','Máquina','https://www.hipertrofia.org/blog/wp-content/uploads/2023/11/lever-leg-extension.gif','Estenda os joelhos de forma controlada e retorne lentamente.'],['Mesa flexora','Máquina','https://www.hipertrofia.org/blog/wp-content/uploads/2023/04/lever-lying-leg-curl.gif','De bruços, flexione os joelhos levando os calcanhares aos glúteos e retorne.'],['Levantamento terra sumô','Barra','','Pés afastados e pontas para fora; levante a barra mantendo coluna neutra.'],['Flexão nórdica','Peso corporal','','Com os tornozelos presos, incline-se à frente controlando a descida e retorne.'],['Good morning','Barra','','Barra nas costas; leve o quadril para trás mantendo coluna neutra e retorne.'],['Agachamento sumô','Barra/halteres','','Pés afastados e pontas para fora; agache mantendo joelhos alinhados aos pés.']]},
+ 'Panturrilhas':{source:'https://www.hipertrofia.org/blog/2024/09/05/exercicios-para-panturrilhas/',items:[['Elevação de panturrilhas em pé na máquina','Máquina','https://www.hipertrofia.org/blog/wp-content/uploads/2023/03/lever-standing-calf-raise.gif','Ombros sob as almofadas, eleve os calcanhares, segure a contração e desça lentamente.'],['Elevação de panturrilhas no leg press','Leg press','https://www.hipertrofia.org/blog/wp-content/uploads/2024/09/sled-calf-press-on-leg-press.gif','Pontas dos pés na parte inferior da plataforma; eleve e desça os calcanhares mantendo tensão.'],['Elevação de panturrilhas em pé com peso do corpo','Peso corporal','https://www.hipertrofia.org/blog/wp-content/uploads/2023/07/standing-calf-raise-on-a-staircase.gif','Em um degrau estável, suba o máximo possível na ponta dos pés e desça lentamente.'],['Elevação de panturrilhas com barra livre','Barra','https://www.hipertrofia.org/blog/wp-content/uploads/2024/09/barbell-standing-calf-raise.gif','Barra nos ombros, eleve os calcanhares e desça lentamente mantendo equilíbrio.'],['Elevação de panturrilhas sentado na máquina','Máquina','https://www.hipertrofia.org/blog/wp-content/uploads/2018/10/lever-seated-calf-raise-.gif','Sentado, peso sobre as coxas; eleve os calcanhares e desça até alongar.'],['Elevação de panturrilhas sentado com halteres','Halteres','https://www.hipertrofia.org/blog/wp-content/uploads/2018/10/dumbbell-seated-one-leg-calf-raise-hammer-grip.gif','Sentado com halteres sobre as coxas, eleve e desça os calcanhares com controle.']]},
+ 'Trapézio':{source:'https://www.hipertrofia.org/blog/2018/03/27/exercicios-para-trapezio/',items:[['Encolhimento','Barra/halteres','','Eleve os ombros verticalmente, segure e desça controlando.'],['Encolhimento por trás do corpo','Barra','','Eleve os ombros com a carga atrás do corpo, sem girar os ombros.'],['Remada alta','Barra/halteres','','Puxe a carga verticalmente com cotovelos elevados dentro de uma amplitude confortável.'],['Levantamento terra','Barra','','Faça a extensão do quadril mantendo coluna neutra e controle a descida.'],['Face pull','Polia/corda','https://www.hipertrofia.org/blog/wp-content/uploads/2024/05/Face-Pull.gif','Puxe a corda em direção ao rosto, mantendo cotovelos altos.'],['Elevação frontal em Y','Halteres','','Eleve os braços em direção à posição de Y com controle.'],['Depressão escapular na polia alta','Polia','','Mantenha os braços estendidos e mova as escápulas para baixo de forma controlada.']]},
+ 'Antebraço':{source:'https://www.hipertrofia.org/blog/2018/02/18/exercicios-para-antebraco/',items:[['Rosca punho','Barra/halteres','','Apoie os antebraços e mova apenas os punhos, levando a carga para cima e para baixo.'],['Rosca punho invertida','Barra/halteres','','Mesma base, mas com palmas para baixo, trabalhando principalmente extensores.'],['Suspensão na barra (dead hang)','Barra','','Fique suspenso segurando a barra e mantenha a posição pelo tempo desejado.'],['Rosca inversa','Barra/halteres','','Faça uma rosca com palmas voltadas para baixo, sem balançar.'],['Rosca martelo','Halteres','https://www.hipertrofia.org/blog/wp-content/uploads/2023/04/dumbbell-hammer-curl-v-2.gif','Use pegada neutra e flexione os cotovelos mantendo o corpo estável.'],['Rosca Zottman','Halteres','','Suba com pegada supinada e desça com pegada pronada.'],['Rolo de punho','Rolo de punho','','Enrole e desenrole a corda usando principalmente os punhos, sem compensar com os braços.']]},
+ 'Glúteos':{source:'https://www.hipertrofia.org/blog/2018/09/20/exercicios-para-gluteos/',items:[['Agachamento livre','Barra','https://www.hipertrofia.org/blog/wp-content/uploads/2024/07/barbell-high-bar-squat.gif','Agache mantendo coluna neutra e controle, com possibilidade de usar base mais ampla para maior ênfase nos glúteos.'],['Passada','Halteres','','Passo à frente, desça controlando e retorne mantendo o tronco estável.'],['Levantamento terra romeno','Barra','','Leve o quadril para trás mantendo coluna neutra e sinta o alongamento dos posteriores.'],['Elevação pélvica','Barra','','Apoie a parte superior das costas no banco, eleve o quadril e contraia os glúteos.'],['Extensão do quadril na polia','Polia','','Mova a perna para trás por extensão do quadril, mantendo o joelho relativamente estendido.']]}
+};
+const VLIB={
+'Peito':[
+['Supino reto com halteres','Halteres','https://www.hipertrofia.org/blog/wp-content/uploads/2020/06/dumbbell-bench-press.gif','https://www.hipertrofia.org/blog/2020/06/29/exercicios-para-peito-com-halteres/'],
+['Supino inclinado com halteres','Halteres','https://www.hipertrofia.org/blog/wp-content/uploads/2023/05/dumbbell-incline-bench-press.gif','https://www.hipertrofia.org/blog/2023/05/06/supino-inclinado-com-halteres/'],
+['Supino reto com barra','Barra','https://www.hipertrofia.org/blog/wp-content/uploads/2024/04/barbell-bench-press.gif','https://www.hipertrofia.org/blog/2017/12/26/exercicios-para-peito/'],
+['Supino inclinado com barra','Barra','https://www.hipertrofia.org/blog/wp-content/uploads/2023/09/barbell-incline-bench-press.gif','https://www.hipertrofia.org/blog/2017/12/26/exercicios-para-peito/'],
+['Crucifixo com halteres','Halteres','https://www.hipertrofia.org/blog/wp-content/uploads/2023/09/dumbbell-fly.gif','https://www.hipertrofia.org/blog/2020/06/29/exercicios-para-peito-com-halteres/'],
+['Crossover na polia','Polia','https://www.hipertrofia.org/blog/wp-content/uploads/2024/08/crucifixo-crossover-alto.gif','https://www.hipertrofia.org/blog/2019/02/14/crossover/'],
+['Supino máquina','Máquina','https://www.hipertrofia.org/blog/wp-content/uploads/2024/04/lever-chest-press-.gif','https://www.hipertrofia.org/blog/2017/12/26/exercicios-para-peito/'],
+['Peck deck / Voador','Máquina','https://www.hipertrofia.org/blog/wp-content/uploads/2023/09/lever-seated-fly.gif','https://www.hipertrofia.org/blog/2017/12/26/exercicios-para-peito/'],
+['Paralelas para peito','Peso corporal','https://www.hipertrofia.org/blog/wp-content/uploads/2023/09/chest-dip-on-dippullup-cage.gif','https://www.hipertrofia.org/blog/2017/12/26/exercicios-para-peito/']
+],
+'Tríceps':[
+['Tríceps corda','Corda','https://www.hipertrofia.org/blog/wp-content/uploads/2025/01/triceps-corda-na-polia-alta.gif','https://www.hipertrofia.org/blog/exercicios-de-musculacao/exercicios-para-triceps/'],
+['Tríceps francês','Halter','https://www.hipertrofia.org/blog/wp-content/uploads/2025/01/triceps-frances-com-um-halter-sentado.gif','https://www.hipertrofia.org/blog/exercicios-de-musculacao/exercicios-para-triceps/'],
+['Tríceps na polia com barra','Barra','https://www.hipertrofia.org/blog/wp-content/uploads/2025/01/triceps-na-polia-com-barra-reta.gif','https://www.hipertrofia.org/blog/exercicios-de-musculacao/exercicios-para-triceps/'],
+['Supino fechado','Barra','https://www.hipertrofia.org/blog/wp-content/uploads/2024/06/close-grip-bench-press.gif','https://www.hipertrofia.org/blog/exercicios-de-musculacao/exercicios-para-triceps/'],
+['Tríceps coice','Halter','https://www.hipertrofia.org/blog/wp-content/uploads/2025/01/triceps-coice.gif','https://www.hipertrofia.org/blog/exercicios-de-musculacao/exercicios-para-triceps/'],
+['Tríceps testa','Barra','https://www.hipertrofia.org/blog/wp-content/uploads/2023/10/dumbbell-lying-triceps-extension.gif','https://www.hipertrofia.org/blog/exercicios-de-musculacao/exercicios-para-triceps/']
+],
+'Costas':[
+['Puxada alta pela frente','Polia','https://www.hipertrofia.org/blog/wp-content/uploads/2019/05/cable-pulldown.gif','https://www.hipertrofia.org/blog/2019/05/05/exercicios-para-costas/'],
+['Remada curvada','Barra','https://www.hipertrofia.org/blog/wp-content/uploads/2024/05/barbell-bent-over-row.gif','https://www.hipertrofia.org/blog/2019/05/05/exercicios-para-costas/'],
+['Remada unilateral','Halter','https://www.hipertrofia.org/blog/wp-content/uploads/2023/09/dumbbell-one-arm-bentover-row.gif','https://www.hipertrofia.org/blog/2025/06/24/a-remada-unilateral-pode-substituir-a-remada-curvada/'],
+['Pulldown','Polia','https://www.hipertrofia.org/blog/wp-content/uploads/2019/05/pulldown.gif','https://www.hipertrofia.org/blog/2019/05/05/exercicios-para-costas/'],
+['Remada baixa','Polia','https://www.hipertrofia.org/blog/wp-content/uploads/2024/05/cable-straight-back-seated-row.gif','https://www.hipertrofia.org/blog/2019/05/05/exercicios-para-costas/'],
+['Remada na máquina (articulada)','Máquina','https://www.hipertrofia.org/blog/wp-content/uploads/2019/05/remada-articulada.jpg','https://www.hipertrofia.org/blog/2019/05/02/remada-articulada/'],
+['Chin-up','Barra','https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/chinup-1.gif','https://www.hipertrofia.org/blog/2019/05/05/exercicios-para-costas/']
+],
+'Bíceps':[
+['Rosca direta barra reta/W','Barra','https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-direta.gif','https://www.hipertrofia.org/blog/2019/04/17/exercicios-para-biceps/'],
+['Rosca simultânea','Halteres','https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-simultanea.gif','https://www.hipertrofia.org/blog/2019/04/17/exercicios-para-biceps/'],
+['Rosca direta na polia','Polia','https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-direta-polia.gif','https://www.hipertrofia.org/blog/2019/04/17/exercicios-para-biceps/'],
+['Rosca concentrada','Halter','https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-concentrada.gif','https://www.hipertrofia.org/blog/2019/04/17/exercicios-para-biceps/'],
+['Rosca inclinada','Halteres','https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-inclinada.gif','https://www.hipertrofia.org/blog/2019/04/17/exercicios-para-biceps/'],
+['Rosca alternada','Halteres','https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-alternada.gif','https://www.hipertrofia.org/blog/2019/04/17/exercicios-para-biceps/'],
+['Rosca martelo','Halteres','https://www.hipertrofia.org/blog/wp-content/uploads/2023/04/dumbbell-hammer-curl-v-2.gif','https://www.hipertrofia.org/blog/2019/04/17/exercicios-para-biceps/']
+],
+'Pernas':[
+['Agachamento livre','Barra','https://www.hipertrofia.org/blog/wp-content/uploads/2024/07/barbell-high-bar-squat.gif','https://www.hipertrofia.org/blog/2024/07/24/exercicios-para-pernas/'],
+['Agachamento goblet','Halter','https://www.hipertrofia.org/blog/wp-content/uploads/2023/11/dumbbell-goblet-squat.gif','https://www.hipertrofia.org/blog/2024/07/24/exercicios-para-pernas/'],
+['Leg press','Máquina','https://www.hipertrofia.org/blog/wp-content/uploads/2018/01/sled-45%D0%B2-leg-press-side-pov.gif','https://www.hipertrofia.org/blog/2024/07/24/exercicios-para-pernas/'],
+['Stiff com halteres','Halteres','https://www.hipertrofia.org/blog/wp-content/uploads/2023/12/dumbbell-stiff-leg-deadlift.gif','https://www.hipertrofia.org/blog/2024/07/24/exercicios-para-pernas/'],
+['Mesa flexora','Máquina','https://www.hipertrofia.org/blog/wp-content/uploads/2023/04/lever-lying-leg-curl.gif','https://www.hipertrofia.org/blog/2018/09/27/exercicios-posteriores-de-coxa/'],
+['Cadeira flexora','Máquina','https://www.hipertrofia.org/blog/wp-content/uploads/2023/04/lever-lying-leg-curl.gif','https://www.hipertrofia.org/blog/2018/09/27/exercicios-posteriores-de-coxa/']
+],
+'Ombros':[
+['Desenvolvimento com halteres','Halteres','https://www.hipertrofia.org/blog/wp-content/uploads/2023/09/dumbbell-seated-shoulder-press.gif','https://www.hipertrofia.org/blog/2024/09/07/exercicios-para-ombros/'],
+['Elevação lateral','Halteres','https://www.hipertrofia.org/blog/wp-content/uploads/2023/11/dumbbell-lateral-raise.gif','https://www.hipertrofia.org/blog/2024/09/07/exercicios-para-ombros/'],
+['Elevação frontal','Halteres','https://www.hipertrofia.org/blog/wp-content/uploads/2023/11/dumbbell-front-raise.gif','https://www.hipertrofia.org/blog/2024/09/07/exercicios-para-ombros/'],
+['Face pull','Corda / polia','https://www.hipertrofia.org/blog/wp-content/uploads/2024/05/Face-Pull.gif','https://www.hipertrofia.org/blog/2019/10/03/exercicio-face-pull-execucao-correta-e-dicas/']
+],
+'Abdômen':[
+['Abdominal supra / reto','Peso corporal','https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/abdominal-reto.gif','https://www.hipertrofia.org/blog/2017/09/21/exercicios-para-abdomen/'],
+['Elevação de pernas nas paralelas','Peso corporal','https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/Abdominal-infra-nas-paralelas.gif','https://www.hipertrofia.org/blog/2017/09/21/exercicios-para-abdomen/'],
+['Abdominal na máquina','Máquina','https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/abdominal-maquina.gif','https://www.hipertrofia.org/blog/2017/09/21/exercicios-para-abdomen/']
+],
+'Panturrilhas':[
+['Elevação de panturrilhas em pé na máquina','Máquina','https://www.hipertrofia.org/blog/wp-content/uploads/2023/03/lever-standing-calf-raise.gif','https://www.hipertrofia.org/blog/2024/09/05/exercicios-para-panturrilhas/'],
+['Elevação de panturrilhas no leg press','Leg press','https://www.hipertrofia.org/blog/wp-content/uploads/2024/09/sled-calf-press-on-leg-press.gif','https://www.hipertrofia.org/blog/2024/09/05/exercicios-para-panturrilhas/'],
+['Elevação de panturrilhas em pé com peso do corpo','Peso corporal','https://www.hipertrofia.org/blog/wp-content/uploads/2023/07/standing-calf-raise-on-a-staircase.gif','https://www.hipertrofia.org/blog/2024/09/05/exercicios-para-panturrilhas/'],
+['Elevação de panturrilhas com barra livre','Barra','https://www.hipertrofia.org/blog/wp-content/uploads/2024/09/barbell-standing-calf-raise.gif','https://www.hipertrofia.org/blog/2024/09/05/exercicios-para-panturrilhas/'],
+['Elevação de panturrilhas sentado na máquina','Máquina','https://www.hipertrofia.org/blog/wp-content/uploads/2018/10/lever-seated-calf-raise-.gif','https://www.hipertrofia.org/blog/2024/09/05/exercicios-para-panturrilhas/'],
+['Elevação de panturrilhas sentado com halteres','Halteres','https://www.hipertrofia.org/blog/wp-content/uploads/2018/10/dumbbell-seated-one-leg-calf-raise-hammer-grip.gif','https://www.hipertrofia.org/blog/2024/09/05/exercicios-para-panturrilhas/']
+]};
+
+const DAYS = ["Segunda","Terça","Quarta","Quinta","Sexta"];
+const STORAGE_KEY = "meuTreino.v5.state";
+const DEFAULT_REST = { "Peito":"90–120 s","Costas":"90–120 s","Bíceps":"60–90 s","Tríceps":"60–90 s","Deltoides":"60–90 s","Ombros":"60–90 s","Pernas":"90–120 s","Panturrilhas":"60–90 s","Abdômen":"60–90 s","Trapézio":"60–90 s","Antebraço":"60–90 s","Glúteos":"60–90 s" };
+let state = loadState();
+let currentFichaDay = 0;
+let currentLibraryMuscle = "Todos";
+let timers = {};
+
+function allCatalog(){
+  const out = [];
+  const seen = new Map();
+  const vmap = {};
+  Object.entries(VLIB).forEach(([muscle, arr])=>{
+    arr.forEach(x=>{
+      vmap[(x[0]||"").toLowerCase()] = {name:x[0], equipment:x[1], gif:x[2]||"", source:x[3]||"", muscle};
+    });
+  });
+  Object.entries(FULL_CATALOG).forEach(([muscle, group])=>{
+    (group.items||[]).forEach(x=>{
+      const key = (x[0]||"").toLowerCase();
+      const v = vmap[key];
+      const item = {
+        id: slug(muscle+"-"+x[0]),
+        name:x[0], muscle, equipment:x[1]||"Não informado",
+        gif:(v && v.gif) || x[2] || "",
+        description:x[3] || "Consulte a fonte para a execução detalhada.",
+        source:(v && v.source) || group.source || ""
+      };
+      if(!seen.has(key)) { seen.set(key,item); out.push(item); }
+      else {
+        const old=seen.get(key);
+        if(!old.gif && item.gif) old.gif=item.gif;
+        if(old.description==="Consulte a fonte para a execução detalhada." && item.description) old.description=item.description;
+      }
+    });
+  });
+  return out;
+}
+const CATALOG = allCatalog();
+const BY_ID = Object.fromEntries(CATALOG.map(x=>[x.id,x]));
+const MUSCLES = [...new Set(CATALOG.map(x=>x.muscle))];
+
+function slug(s){return s.normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
+function defaultState(){
+  return { days:Object.fromEntries(DAYS.map(d=>[d,{muscles:[],exercises:[]}])) };
+}
+function loadState(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw) return defaultState();
+    const s=JSON.parse(raw);
+    if(!s.days) return defaultState();
+    DAYS.forEach(d=>{ if(!s.days[d]) s.days[d]={muscles:[],exercises:[]}; });
+    return s;
+  }catch(e){return defaultState();}
+}
+function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}
+function toast(msg){
+  const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");
+  clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove("show"),1800);
+}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function exerciseData(id){
+  const x=BY_ID[id]; if(!x) return null;
+  return x;
+}
+function normalizeDayExercises(day){
+  state.days[day].exercises = state.days[day].exercises.filter(e=>BY_ID[e.id]);
+}
+function switchView(id){
+  document.querySelectorAll(".main-tab").forEach(b=>b.classList.toggle("active",b.dataset.view===id));
+  document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id===id));
+  if(id==="fichaView") renderFicha();
+  if(id==="treinoView") renderBuilder();
+  if(id==="bibliotecaView") renderLibrary();
+}
+document.querySelectorAll(".main-tab").forEach(b=>b.onclick=()=>switchView(b.dataset.view));
+
+function renderFicha(){
+  const tabs=document.getElementById("fichaDayTabs");
+  tabs.innerHTML=DAYS.map((d,i)=>`<button class="day-tab ${i===currentFichaDay?"active":""}" data-i="${i}">${dayIcon(d)}<br>${d}</button>`).join("");
+  tabs.querySelectorAll("button").forEach(b=>b.onclick=()=>{currentFichaDay=+b.dataset.i;renderFicha()});
+  const wrap=document.getElementById("fichaDays");
+  wrap.innerHTML=DAYS.map((d,i)=>renderFichaDay(d,i===currentFichaDay)).join("");
+  bindFicha();
+}
+function dayIcon(d){return ({Segunda:"SEG",Terça:"TER",Quarta:"QUA",Quinta:"QUI",Sexta:"SEX"})[d]||d.slice(0,3).toUpperCase()}
+function renderFichaDay(day,active){
+  const data=state.days[day]; normalizeDayExercises(day);
+  if(!active) return `<div class="day-panel"></div>`;
+  const groups=[];
+  data.muscles.forEach(m=>{
+    const ids=data.exercises.filter(e=>e.muscle===m);
+    if(ids.length) groups.push(`<div class="muscle-group"><div class="muscle-title">${esc(m)}</div>${ids.map(id=>renderExerciseCard(id,day)).join("")}</div>`);
+  });
+  const extras=suggestionsFor(day);
+  return `<div class="day-panel active">
+    <div class="day-title"><h3>${day} — ${data.muscles.length?esc(data.muscles.join(" + ")):"Nenhum treino configurado"}</h3>
+    <p>${data.exercises.length} exercício(s) configurado(s)</p></div>
+    ${groups.join("") || `<div class="empty">Ainda não há exercícios neste dia. Vá em <b>Meu Treino</b> para montar sua ficha.</div>`}
+    ${data.exercises.length ? `<div class="suggestions"><h3>🔄 Sugestões para substituir</h3><p>Escolha uma alternativa se não quiser ou não puder fazer algum exercício deste dia.</p><div class="suggestion-grid">${extras.map(x=>renderSuggestion(x,day)).join("")}</div></div>`:""}
+  </div>`;
+}
+function renderExerciseCard(id,day){
+  const x=exerciseData(id), e=state.days[day].exercises.find(z=>z.id===id);
+  if(!x||!e)return "";
+  const done=!!e.done, restSeconds=restToSeconds(e.rest||DEFAULT_REST[x.muscle]||"90");
+  return `<article class="exercise-card ${done?"done":""}" data-id="${esc(id)}" data-day="${esc(day)}">
+    <div class="card-main">
+      <div class="card-info">
+        <div class="eyebrow">${esc(x.muscle)}</div>
+        <div class="card-title">${esc(x.name)}</div>
+        <div class="card-desc">${esc(x.description)}</div>
+        <div class="meta"><span class="tag">🔧 ${esc(x.equipment)}</span>${x.gif?'<span class="tag">🎞️ GIF</span>':'<span class="tag">⚠️ sem GIF</span>'}</div>
+      </div>
+      <div class="media ${x.gif?"":"missing"}">${x.gif?`<img loading="lazy" src="${esc(x.gif)}" alt="Execução: ${esc(x.name)}">`:""}</div>
+    </div>
+    <div class="fields">
+      <div class="field"><label>Séries</label><input data-field="sets" value="${esc(e.sets||"3")}" readonly></div>
+      <div class="field"><label>Reps alvo</label><input data-field="targetReps" value="${esc(e.targetReps||"8–12")}" readonly></div>
+      <div class="field"><label>Peso (kg)</label><input data-field="weight" type="number" min="0" step="0.5" value="${esc(e.weight||"")}" placeholder="ex.: 20"></div>
+      <div class="field"><label>Reps feitas</label><input data-field="actualReps" type="number" min="0" step="1" value="${esc(e.actualReps||"")}" placeholder="ex.: 10"></div>
+    </div>
+    <div class="controls">
+      <button class="btn done-btn" data-action="done">${done?"↩️ Desfazer":"✓ Concluído"}</button>
+      <button class="btn" data-action="timer" data-seconds="${restSeconds}">⏱️ Iniciar descanso</button>
+      <span class="timer" data-timer="${id}">--:--</span>
+      <button class="btn" data-action="openGif">🎞️ Ver GIF</button>
+    </div>
+    <div class="note-row"><input data-field="note" value="${esc(e.note||"")}" placeholder="Observação: última série difícil, aumentar carga..."></div>
+  </article>`;
+}
+function renderSuggestion(x,day){
+  return `<div class="suggestion"><img loading="lazy" src="${esc(x.gif)}" alt=""><div class="suggestion-body"><strong>${esc(x.name)}</strong><small>${esc(x.muscle)} · ${esc(x.equipment)}</small><button class="btn primary" data-suggest="${esc(x.id)}" data-day="${esc(day)}">Substituir / adicionar</button></div></div>`;
+}
+function suggestionsFor(day){
+  const data=state.days[day], selected=new Set(data.exercises.map(e=>e.id)), out=[];
+  const pool=CATALOG.filter(x=>data.muscles.includes(x.muscle)&&!selected.has(x.id)&&x.gif);
+  for(const x of pool){if(!out.some(y=>y.muscle===x.muscle)||out.length<3)out.push(x);if(out.length>=Math.max(3,data.muscles.length*2))break}
+  return out.slice(0,6);
+}
+function bindFicha(){
+  document.querySelectorAll("[data-action='done']").forEach(btn=>btn.onclick=()=>{
+    const card=btn.closest(".exercise-card"), day=card.dataset.day, id=card.dataset.id, e=state.days[day].exercises.find(z=>z.id===id);
+    e.done=!e.done;
+    if(e.done){e.completedAt=new Date().toISOString(); const idx=state.days[day].exercises.findIndex(z=>z.id===id); state.days[day].exercises.push(...state.days[day].exercises.splice(idx,1));}
+    saveState(); renderFicha(); toast(e.done?"Exercício concluído e enviado para o final da fila.":"Exercício reaberto.");
+  });
+  document.querySelectorAll(".exercise-card input[data-field]").forEach(inp=>inp.addEventListener("change",()=>{
+    const card=inp.closest(".exercise-card"), day=card.dataset.day,id=card.dataset.id,e=state.days[day].exercises.find(z=>z.id===id);
+    e[inp.dataset.field]=inp.value; saveState();
+  }));
+  document.querySelectorAll("[data-action='timer']").forEach(btn=>btn.onclick=()=>startTimer(btn.closest(".exercise-card").dataset.id,+btn.dataset.seconds));
+  document.querySelectorAll("[data-action='openGif']").forEach(btn=>btn.onclick=()=>{
+    const card=btn.closest(".exercise-card"), x=exerciseData(card.dataset.id); openModal(x);
+  });
+  document.querySelectorAll("[data-suggest]").forEach(btn=>btn.onclick=()=>{
+    const day=btn.dataset.day,id=btn.dataset.suggest,x=exerciseData(id);
+    addExercise(day,id); saveState(); renderFicha(); toast(x.name+" adicionado ao final da ficha.");
+  });
+}
+function restToSeconds(v){
+  const m=String(v).match(/(\d+)/);return m?Number(m[1]):90;
+}
+function startTimer(id,seconds){
+  clearInterval(timers[id]);let left=seconds;
+  const nodes=document.querySelectorAll(`[data-timer="${CSS.escape(id)}"]`);
+  const tick=()=>{nodes.forEach(n=>n.textContent=`${String(Math.floor(left/60)).padStart(2,"0")}:${String(left%60).padStart(2,"0")}`);if(left<=0){clearInterval(timers[id]);toast("⏰ Descanso concluído!");}left--};
+  tick();timers[id]=setInterval(tick,1000);
+}
+
+function renderBuilder(){
+  const b=document.getElementById("builder");
+  b.innerHTML=DAYS.map((day,i)=>renderBuilderDay(day,i===0)).join("");
+  b.querySelectorAll(".builder-day").forEach(el=>{
+    const day=el.dataset.day;
+    el.querySelectorAll(".muscle-chip").forEach(btn=>btn.onclick=()=>{
+      const m=btn.dataset.muscle,d=state.days[day];
+      if(d.muscles.includes(m)) d.muscles=d.muscles.filter(x=>x!==m); else d.muscles.push(m);
+      saveState();renderBuilder();
+    });
+    el.querySelectorAll(".picker-search").forEach(inp=>inp.oninput=()=>renderPicker(day,inp.dataset.muscle,inp.value));
+    el.querySelectorAll(".pick-add").forEach(btn=>btn.onclick=()=>{addExercise(day,btn.dataset.id);saveState();renderBuilder();toast("Exercício adicionado.");});
+    el.querySelectorAll(".pick-remove").forEach(btn=>btn.onclick=()=>{removeExercise(day,btn.dataset.id);saveState();renderBuilder();});
+    el.querySelectorAll(".move-up").forEach(btn=>btn.onclick=()=>moveExercise(day,btn.dataset.id,-1));
+    el.querySelectorAll(".move-down").forEach(btn=>btn.onclick=()=>moveExercise(day,btn.dataset.id,1));
+    el.querySelectorAll("[data-save-day]").forEach(btn=>btn.onclick=()=>{saveState();toast(day+" salvo na sua ficha.");});
+  });
+}
+function renderBuilderDay(day,open){
+  const d=state.days[day];
+  return `<details class="builder-day" data-day="${day}" ${open?"open":""}>
+    <summary>${day} — ${d.muscles.length?esc(d.muscles.join(" + ")):"escolha os músculos"}</summary>
+    <div class="muscles">${MUSCLES.map(m=>`<button class="muscle-chip ${d.muscles.includes(m)?"selected":""}" data-muscle="${esc(m)}">${d.muscles.includes(m)?"✓ ":""}${esc(m)}</button>`).join("")}</div>
+    ${d.muscles.map(m=>renderPicker(day,m,"")).join("")}
+    <div class="selected-list">${d.exercises.length?d.exercises.map((id,idx)=>renderSelectedItem(day,id,idx)).join(""):"<div class='empty'>Nenhum exercício selecionado ainda.</div>"}</div>
+    <div class="save-row"><button class="btn primary" data-save-day>💾 Salvar ${day}</button><button class="btn" data-go-ficha="${day}">📋 Ver ficha</button></div>
+  </details>`;
+}
+function renderPicker(day,muscle,query){
+  const d=state.days[day], selected=new Set(d.exercises.map(e=>e.id));
+  const arr=CATALOG.filter(x=>x.muscle===muscle && (!query||x.name.toLowerCase().includes(query.toLowerCase())));
+  return `<div class="exercise-picker open" data-picker="${esc(muscle)}">
+    <div class="picker-head"><h4>${esc(muscle)} — escolha seus exercícios</h4><span class="selected-mark">${d.exercises.filter(e=>e.muscle===muscle).length} selecionado(s)</span></div>
+    <input class="picker-search" data-muscle="${esc(muscle)}" placeholder="🔎 Pesquisar em ${esc(muscle)}..." value="${esc(query)}">
+    <div class="picker-grid">${arr.map(x=>`<div class="pick-card">
+      <div class="pick-media">${x.gif?`<img loading="lazy" src="${esc(x.gif)}" alt="Execução: ${esc(x.name)}">`:"<div class='empty' style='border:0;border-radius:0;height:100%;display:flex;align-items:center'>GIF não disponível no material atual</div>"}</div>
+      <div class="pick-body"><strong>${esc(x.name)}</strong><p>${esc(x.description)}</p><div class="meta"><span class="tag">🔧 ${esc(x.equipment)}</span></div>
+      <div class="pick-actions">${selected.has(x.id)?`<button class="btn danger pick-remove" data-id="${esc(x.id)}">Remover</button>`:`<button class="btn primary pick-add" data-id="${esc(x.id)}">+ Adicionar</button>`}<span class="selected-mark">${selected.has(x.id)?"✓ selecionado":""}</span></div></div>
+    </div>`).join("")||"<div class='empty'>Nenhum exercício encontrado.</div>"}</div>
+  </div>`;
+}
+function renderSelectedItem(day,id,idx){
+  const x=exerciseData(id);if(!x)return "";
+  return `<div class="selected-item"><img src="${esc(x.gif)}" alt=""><span><b>${idx+1}.</b> ${esc(x.name)}<small style="display:block;color:var(--muted)">${esc(x.muscle)}</small></span>
+    <button class="btn order-btn move-up" data-id="${esc(id)}">↑</button><button class="btn order-btn move-down" data-id="${esc(id)}">↓</button><button class="btn order-btn danger pick-remove" data-id="${esc(id)}">✕</button></div>`;
+}
+function addExercise(day,id){
+  const d=state.days[day];if(d.exercises.some(e=>e.id===id))return;
+  const x=BY_ID[id];
+  d.exercises.push({id,muscle:x.muscle,sets:"3",targetReps:defaultReps(x.muscle),weight:"",actualReps:"",rest:DEFAULT_REST[x.muscle]||"90 s",note:"",done:false});
+}
+function defaultReps(m){return ["Peito","Costas","Pernas"].includes(m)?"8–12":"10–15"}
+function removeExercise(day,id){state.days[day].exercises=state.days[day].exercises.filter(e=>e.id!==id)}
+function moveExercise(day,id,dir){
+  const a=state.days[day].exercises,i=a.findIndex(e=>e.id===id),j=i+dir;if(i<0||j<0||j>=a.length)return;
+  [a[i],a[j]]=[a[j],a[i]];saveState();renderBuilder();
+}
+document.getElementById("builder").addEventListener("click",e=>{
+  const b=e.target.closest("[data-go-ficha]");if(b){currentFichaDay=DAYS.indexOf(b.dataset.goFicha);switchView("fichaView");}
+});
+
+function renderLibrary(){
+  const filter=document.getElementById("catalogFilter");
+  const cats=["Todos",...MUSCLES];
+  filter.innerHTML=cats.map(m=>`<button class="btn ${m===currentLibraryMuscle?"primary":""}" data-muscle="${esc(m)}">${esc(m)}</button>`).join("");
+  filter.querySelectorAll("button").forEach(b=>b.onclick=()=>{currentLibraryMuscle=b.dataset.muscle;renderLibrary()});
+  const q=document.getElementById("librarySearch").value.toLowerCase().trim();
+  const arr=CATALOG.filter(x=>(currentLibraryMuscle==="Todos"||x.muscle===currentLibraryMuscle)&&(!q||x.name.toLowerCase().includes(q)||x.muscle.toLowerCase().includes(q)||x.equipment.toLowerCase().includes(q)));
+  document.getElementById("catalogGrid").innerHTML=arr.map(x=>`<article class="lib-card">
+    ${x.gif?`<img loading="lazy" src="${esc(x.gif)}" alt="Execução: ${esc(x.name)}">`:`<div class="empty" style="height:160px;display:flex;align-items:center;justify-content:center;border:0;border-radius:0">GIF não disponível no material atual</div>`}
+    <div class="lib-body"><strong>${esc(x.name)}</strong><div class="lib-meta"><span class="tag">${esc(x.muscle)}</span><span class="tag">🔧 ${esc(x.equipment)}</span></div><p>${esc(x.description)}</p>
+    <div class="lib-actions"><button class="btn primary" data-lib-add="${esc(x.id)}">+ Adicionar</button>${x.source?`<a class="source" href="${esc(x.source)}" target="_blank" rel="noopener">Fonte</a>`:""}</div></div>
+  </article>`).join("") || "<div class='empty'>Nenhum exercício encontrado.</div>";
+  document.querySelectorAll("[data-lib-add]").forEach(b=>b.onclick=()=>openAddModal(b.dataset.libAdd));
+}
+document.getElementById("librarySearch").addEventListener("input",renderLibrary);
+
+function openAddModal(id){
+  const x=BY_ID[id];
+  document.getElementById("modalTitle").textContent="Adicionar "+x.name;
+  document.getElementById("modalContent").innerHTML=`<p class="sub">Escolha o dia para adicionar este exercício ao final da fila.</p><div class="muscles">${DAYS.map(d=>`<button class="muscle-chip" data-modal-day="${d}">${d}</button>`).join("")}</div>`;
+  document.querySelectorAll("[data-modal-day]").forEach(b=>b.onclick=()=>{addExercise(b.dataset.modalDay,id);saveState();closeModal();toast(x.name+" adicionado à "+b.dataset.modalDay);renderLibrary()});
+  document.getElementById("imageModal").classList.add("open");
+}
+function openModal(x){
+  document.getElementById("modalTitle").textContent=x.name;
+  document.getElementById("modalContent").innerHTML=`${x.gif?`<img src="${esc(x.gif)}" alt="" style="width:100%;max-height:65vh;object-fit:contain;background:#050a10;border-radius:12px">`:""}<p class="card-desc">${esc(x.description)}</p><div class="meta"><span class="tag">${esc(x.muscle)}</span><span class="tag">🔧 ${esc(x.equipment)}</span></div>`;
+  document.getElementById("imageModal").classList.add("open");
+}
+function closeModal(){document.getElementById("imageModal").classList.remove("open")}
+document.getElementById("modalClose").onclick=closeModal;
+document.getElementById("imageModal").addEventListener("click",e=>{if(e.target.id==="imageModal")closeModal()});
+
+renderFicha();
+</script>
+</body>
+</html>

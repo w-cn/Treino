@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "days": {
+    "Segunda": {
+      "muscles": [
+        "Peito",
+        "Bíceps",
+        "Cardio"
+      ],
+      "exercises": [
+        {
+          "id": "eito-pino-reto",
+          "muscle": "Peito",
+          "sets": "3",
+          "targetReps": "12",
+          "weight": "40",
+          "rest": "90",
+          "note": "",
+          "done": false,
+          "duration": "",
+          "distance": "",
+          "intensity": ""
+        },
+        {
+          "id": "i-ceps-osca-concentrada",
+          "muscle": "Bíceps",
+          "sets": "3",
+          "targetReps": "10–15",
+          "weight": "",
+          "rest": "60",
+          "note": "",
+          "done": false,
+          "duration": "",
+          "distance": "",
+          "intensity": ""
+        },
+        {
+          "id": "cardio-stationary-bike-walk",
+          "muscle": "Cardio",
+          "sets": "",
+          "targetReps": "",
+          "weight": "",
+          "rest": "60",
+          "note": "",
+          "done": false,
+          "duration": "",
+          "distance": "",
+          "intensity": ""
+        }
+      ]
+    },
+    "Terça": {
+      "muscles": [],
+      "exercises": []
+    },
+    "Quarta": {
+      "muscles": [],
+      "exercises": []
+    },
+    "Quinta": {
+      "muscles": [],
+      "exercises": []
+    },
+    "Sexta": {
+      "muscles": [],
+      "exercises": []
+    }
+  },
+  "history": []
+}

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07101d">
+<title>Meu Treino — Ficha + Biblioteca</title>
+<link rel="stylesheet" href="/src/styles/main.css">
+</head>
+<body>
+<div class="app">
+<header>
+  <h1>🏋️ Meu Treino</h1>
+  <p class="sub">Monte seus dias, escolha os músculos e exercícios e acompanhe cargas, repetições e histórico neste navegador.</p>
+  <div class="topstats">
+    <span class="pill"><span id="storageStatus">Conectando ao banco local…</span></span>
+    <span class="pill">📈 Progressão de carga</span>
+    <span class="pill">⏱️ Cronômetro de descanso</span>
+    <span class="pill">🎞️ GIF + descrição</span>
+  </div>
+</header>
+
+<nav class="main-tabs">
+  <button class="main-tab active" data-view="fichaView">📋 Minha Ficha</button>
+  <button class="main-tab" data-view="treinoView">🏋️ Meu Treino</button>
+  <button class="main-tab" data-view="bibliotecaView">📚 Biblioteca</button>
+</nav>
+
+<section id="fichaView" class="view active">
+  <div class="section-head"><div><h2>Minha Ficha</h2><p>Execute os exercícios. Ao concluir, ele vai para o final da fila.</p></div></div>
+  <div class="toolbar"><button class="btn" id="newSession">Nova sessão</button><button class="btn" id="showHistory">Histórico</button><button class="btn" id="exportState">Exportar backup</button><label class="btn">Importar backup<input id="importState" type="file" accept="application/json,.json" hidden></label></div><div id="fichaDayTabs" class="day-tabs"></div>
+  <div id="fichaDays"></div>
+</section>
+
+<section id="treinoView" class="view">
+  <div class="section-head"><div><h2>Meu Treino</h2><p>Escolha o dia → músculos → exercícios. A ficha é gerada automaticamente.</p></div></div>
+  <div class="builder" id="builder"></div>
+</section>
+
+<section id="bibliotecaView" class="view">
+  <div class="section-head"><div><h2>Biblioteca de Exercícios</h2><p>Pesquise por exercício, músculo ou equipamento. Consulte a fonte para detalhes de execução.</p></div></div>
+  <div class="library-controls"><input id="librarySearch" aria-label="Pesquisar exercícios" placeholder="🔎 Pesquisar exercício..."></div>
+  <div id="catalogFilter" class="catalog-filter"></div>
+  <div id="catalogGrid" class="catalog-grid"></div>
+</section>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<div id="imageModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="sheet"><div class="sheet-head"><h3 id="modalTitle"></h3><button class="btn" id="modalClose">Fechar</button></div><div id="modalContent" style="margin-top:10px"></div></div></div>
+
+<script type="module" src="/src/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "meu-treino",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "dev": "node --watch server/dev.mjs",
+    "start": "node server/dev.mjs",
+    "test": "node --test",
+    "check": "node scripts/check.mjs",
+    "build": "node scripts/build.mjs",
+    "media:audit": "node scripts/audit-media.mjs"
+  }
+}

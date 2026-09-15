@@ -1,0 +1,383 @@
+{
+  "checkedAt": "2026-09-15T13:06:23.573Z",
+  "verification": [
+    {
+      "id": "i-ceps-hin-p",
+      "source": "https://www.hipertrofia.org/blog/2019/04/17/exercicios-para-biceps/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/chinup-1.gif",
+      "bytes": 191745,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "i-ceps-osca-cott",
+      "source": "https://www.hipertrofia.org/blog/2019/04/17/exercicios-para-biceps/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-scott.gif",
+      "bytes": 281589,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "i-ceps-osca-arrastada-drag-crl",
+      "source": "https://www.hipertrofia.org/blog/2019/04/17/exercicios-para-biceps/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-arrastada.gif",
+      "bytes": 227048,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "ri-ceps-aralelas",
+      "source": "https://www.hipertrofia.org/blog/exercicios-de-musculacao/exercicios-para-triceps/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2025/01/paralelas-para-triceps-com-carga.gif",
+      "bytes": 219366,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "i-ceps-osca-spider",
+      "source": "https://www.hipertrofia.org/blog/2019/04/17/exercicios-para-biceps/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-spider.gif",
+      "bytes": 251629,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "i-ceps-osca-ottman",
+      "source": "https://www.hipertrofia.org/blog/2019/04/17/exercicios-para-biceps/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-zottman.gif",
+      "bytes": 385784,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "ri-ceps-ri-ceps-invertido",
+      "source": "https://www.hipertrofia.org/blog/exercicios-de-musculacao/exercicios-para-triceps/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2025/01/triceps-invertido.gif",
+      "bytes": 259085,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "ri-ceps-lexa-o-diamante",
+      "source": "https://www.hipertrofia.org/blog/exercicios-de-musculacao/exercicios-para-triceps/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2025/01/flexao-diamante.gif",
+      "bytes": 269632,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "ri-ceps-ri-ceps-banco",
+      "source": "https://www.hipertrofia.org/blog/exercicios-de-musculacao/exercicios-para-triceps/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2025/01/triceps-banco.gif",
+      "bytes": 222062,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "eito-pino-declinado-canadense",
+      "source": "https://www.hipertrofia.org/blog/2017/12/26/exercicios-para-peito/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2018/09/barbell-decline-bench-press.gif",
+      "bytes": 348696,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "eltoides-esenvolvimento-rnold",
+      "source": "https://www.hipertrofia.org/blog/2024/09/07/exercicios-para-ombros/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/11/dumbbell-arnold-press.gif",
+      "bytes": 243794,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "eltoides-rciixo-inverso",
+      "source": "https://www.hipertrofia.org/blog/2024/09/07/exercicios-para-ombros/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2018/03/crucifixo-invertido-com-halteres.gif",
+      "bytes": 287048,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "eltoides-levac-a-o-rontal-com-barra",
+      "source": "https://www.hipertrofia.org/blog/2024/09/07/exercicios-para-ombros/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/03/barbell-front-raise.gif",
+      "bytes": 339645,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "eltoides-emada-alta-com-barra",
+      "source": "https://www.hipertrofia.org/blog/2024/09/07/exercicios-para-ombros/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/03/barbell-widegrip-upright-row.gif",
+      "bytes": 302592,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "ostas-arra-ixa",
+      "source": "https://www.hipertrofia.org/blog/2019/05/05/exercicios-para-costas/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/05/pullup.gif",
+      "bytes": 206381,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "eltoides-esenvolvimento-com-barra",
+      "source": "https://www.hipertrofia.org/blog/2024/09/07/exercicios-para-ombros/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/03/desenvolvimento-com-barra-sentado.gif",
+      "bytes": 350184,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "eltoides-levac-a-o-lateral-na-polia",
+      "source": "https://www.hipertrofia.org/blog/2024/09/07/exercicios-para-ombros/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/12/cable-one-arm-lateral-raise.gif",
+      "bytes": 291221,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "ostas-emada-cavalinho",
+      "source": "https://www.hipertrofia.org/blog/2019/05/05/exercicios-para-costas/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/05/t-bar-row-remada-cavalinho.gif",
+      "bytes": 191760,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "eltoides-emada-alta-com-halteres",
+      "source": "https://www.hipertrofia.org/blog/2024/09/07/exercicios-para-ombros/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/01/dumbbell-upright-row.gif",
+      "bytes": 219871,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "ostas-oador-invertido",
+      "source": "https://www.hipertrofia.org/blog/2019/05/05/exercicios-para-costas/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2018/03/lever-seated-reverse-fly-parallel-grip.gif",
+      "bytes": 364860,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "ostas-ncolhimento",
+      "source": "https://www.hipertrofia.org/blog/2019/05/05/exercicios-para-costas/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/01/dumbbell-shrug.gif",
+      "bytes": 251077,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "bdo-men-bdominal-na-polia",
+      "source": "https://www.hipertrofia.org/blog/2017/09/21/exercicios-para-abdomen/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/abdominal-na-polia.gif",
+      "bytes": 244041,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "bdo-men-bdominal-tesora",
+      "source": "https://www.hipertrofia.org/blog/2017/09/21/exercicios-para-abdomen/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/Abdominal-tesoura.gif",
+      "bytes": 161983,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "bdo-men-bdominal-inra-solo-abdominal-inverso",
+      "source": "https://www.hipertrofia.org/blog/2017/09/21/exercicios-para-abdomen/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/Abdominal-infra-solo.gif",
+      "bytes": 239270,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "bdo-men-bdominal-crzado",
+      "source": "https://www.hipertrofia.org/blog/2017/09/21/exercicios-para-abdomen/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/Abdominal-cruzado.gif",
+      "bytes": 222373,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "bdo-men-bdominal-remador",
+      "source": "https://www.hipertrofia.org/blog/2017/09/21/exercicios-para-abdomen/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/abdominal-remador.gif",
+      "bytes": 472559,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "bdo-men-oda-abdominal",
+      "source": "https://www.hipertrofia.org/blog/2017/09/21/exercicios-para-abdomen/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/abdominal-roda.gif",
+      "bytes": 151303,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "bdo-men-bdominal-declinado",
+      "source": "https://www.hipertrofia.org/blog/2017/09/21/exercicios-para-abdomen/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/Abdominal-declinado.gif",
+      "bytes": 189557,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "bdo-men-bdominal-lateral",
+      "source": "https://www.hipertrofia.org/blog/2017/09/21/exercicios-para-abdomen/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2017/09/Abdominal-lateral.gif",
+      "bytes": 238568,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "ernas-gachamento-rontal",
+      "source": "https://www.hipertrofia.org/blog/2024/07/24/exercicios-para-pernas/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/09/front-squat.gif",
+      "bytes": 296318,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "bdo-men-bdominal-invertido",
+      "source": "https://www.hipertrofia.org/blog/2017/09/21/exercicios-para-abdomen/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/12/abdominal-infra-solo2.gif",
+      "bytes": 239270,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "ernas-gachamento-hack",
+      "source": "https://www.hipertrofia.org/blog/2024/07/24/exercicios-para-pernas/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/03/sled-hack-squat.gif",
+      "bytes": 339125,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "ernas-gachamento-b-lgaro",
+      "source": "https://www.hipertrofia.org/blog/2024/07/24/exercicios-para-pernas/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/06/agachamento-bulgaro.gif",
+      "bytes": 182395,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "ernas-ndo",
+      "source": "https://www.hipertrofia.org/blog/2024/07/24/exercicios-para-pernas/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/12/dumbbell-lunge.gif",
+      "bytes": 233820,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "ernas-evantamento-terra-romeno",
+      "source": "https://www.hipertrofia.org/blog/2024/07/24/exercicios-para-pernas/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/07/Barbell-Romanian-Deadlift.gif",
+      "bytes": 228979,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "ernas-evantamento-terra-smo",
+      "source": "https://www.hipertrofia.org/blog/2024/07/24/exercicios-para-pernas/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/03/barbell-sumo-deadlift.gif",
+      "bytes": 295136,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "ernas-levac-a-o-pe-lvica-com-barra",
+      "source": "https://www.hipertrofia.org/blog/2022/12/16/exercicio-elevacao-de-quadril/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2022/12/gif-hip-thrust.gif",
+      "bytes": 963867,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "ernas-ood-morning",
+      "source": "https://www.hipertrofia.org/blog/2024/07/24/exercicios-para-pernas/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/09/barbell-good-morning.gif",
+      "bytes": 285575,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "ernas-lexa-o-no-rdica",
+      "source": "https://www.hipertrofia.org/blog/2024/07/24/exercicios-para-pernas/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/12/nordic-curl.gif",
+      "bytes": 178315,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "ernas-gachamento-smo",
+      "source": "https://www.hipertrofia.org/blog/2024/07/24/exercicios-para-pernas/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/07/smith-sumo-squat.gif",
+      "bytes": 312807,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "rape-zio-ncolhimento-por-tra-s-do-corpo",
+      "source": "https://www.hipertrofia.org/blog/2018/03/27/exercicios-para-trapezio/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2018/03/encolhimento-por-tras-do-corpo-no-smith.gif",
+      "bytes": 267869,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "rape-zio-emada-alta",
+      "source": "https://www.hipertrofia.org/blog/2018/03/27/exercicios-para-trapezio/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2018/03/remada-em-pe-com-barra.gif",
+      "bytes": 204821,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "rape-zio-evantamento-terra",
+      "source": "https://www.hipertrofia.org/blog/2018/03/27/exercicios-para-trapezio/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2018/03/levantamento-terra-com-barra.gif",
+      "bytes": 246055,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "ntebrac-o-osca-pnho",
+      "source": "https://www.hipertrofia.org/blog/2018/02/18/exercicios-para-antebraco/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/12/rusca-punho-com-barra.gif",
+      "bytes": 277021,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "rape-zio-epressa-o-escaplar-na-polia-alta",
+      "source": "https://www.hipertrofia.org/blog/2018/03/27/exercicios-para-trapezio/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2018/03/depressao-escapular-na-puxada.gif",
+      "bytes": 165642,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "rape-zio-levac-a-o-rontal-em",
+      "source": "https://www.hipertrofia.org/blog/2018/03/27/exercicios-para-trapezio/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2018/03/elevacao-em-y-com-halteres-banco-inclinado.gif",
+      "bytes": 235548,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "ntebrac-o-osca-pnho-invertida",
+      "source": "https://www.hipertrofia.org/blog/2018/02/18/exercicios-para-antebraco/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2018/02/rosca-punho-inversa.gif",
+      "bytes": 238113,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "l-teos-assada",
+      "source": "https://www.hipertrofia.org/blog/2024/07/24/exercicios-para-pernas/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2023/12/dumbbell-lunge.gif",
+      "bytes": 233820,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "ntebrac-o-spensa-o-na-barra-dead-hang",
+      "source": "https://www.hipertrofia.org/blog/2018/02/18/exercicios-para-antebraco/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/12/suspensao-na-barra-dead-hang.gif",
+      "bytes": 260758,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "ntebrac-o-osca-inversa",
+      "source": "https://www.hipertrofia.org/blog/2018/02/18/exercicios-para-antebraco/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2018/02/rosca-invertida-com-barra.gif",
+      "bytes": 282830,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "l-teos-levac-a-o-pe-lvica",
+      "source": "https://www.hipertrofia.org/blog/2022/12/16/exercicio-elevacao-de-quadril/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2022/12/gif-hip-thrust.gif",
+      "bytes": 963867,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "l-teos-xtensa-o-do-qadril-na-polia",
+      "source": "https://www.hipertrofia.org/blog/2024/06/10/qual-exercicio-substitui-a-elevacao-pelvica/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/06/coice.gif",
+      "bytes": 281340,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "ntebrac-o-olo-de-pnho",
+      "source": "https://www.hipertrofia.org/blog/2018/02/18/exercicios-para-antebraco/",
+      "url": "https://www.hipertrofia.org/blog/wp-content/uploads/2024/12/rolo-de-punho.gif",
+      "bytes": 224807,
+      "signature": "GIF89a"
+    },
+    {
+      "id": "bdo-men-rancha-abdominal",
+      "source": "https://fitnessprogramer.com/exercise/plank/",
+      "url": "https://fitnessprogramer.com/wp-content/uploads/2021/02/plank.gif",
+      "bytes": 17562,
+      "signature": "GIF89a"
+    }
+  ]
+}
