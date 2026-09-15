@@ -296,6 +296,7 @@ function generatePrompt(){
 function setupPromptGenerator(){
   const form=document.getElementById('promptForm');
   if(!form)return;
+  document.getElementById('promptDays').innerHTML=DAYS.map(day=>`<label><input type="checkbox" name="days" value="${esc(day)}" checked> ${esc(day)}</label>`).join('');
   form.addEventListener('submit',event=>{event.preventDefault();generatePrompt();toast('Documento gerado.');});
   document.getElementById('copyPrompt').onclick=async()=>{generatePrompt();const output=document.getElementById('promptOutput');try{await navigator.clipboard.writeText(output.value);}catch{output.select();document.execCommand('copy');}toast('Documento copiado.');};
   document.getElementById('downloadPrompt').onclick=()=>{generatePrompt();const blob=new Blob([document.getElementById('promptOutput').value],{type:'text/markdown;charset=utf-8'});const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='prompt-gerador-de-treino.md';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Documento baixado.');};

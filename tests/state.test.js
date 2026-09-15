@@ -29,6 +29,18 @@ test('migra ficha v5 e inclui músculo de exercício adicionado pela biblioteca'
   assert.equal(result.days.Segunda.exercises[0].weight, '22.5');
   assert.deepEqual(result.history, []);
 });
+test('importa dias e músculos sem acentos gerados por modelos', () => {
+  const result = validateState({
+    version: 1,
+    days: {
+      Terca: { muscles: ['Biceps'], exercises: [{ id: 'i-ceps-osca-martelo', muscle: 'Biceps', done: false, sets: '3', targetReps: '8-12' }] },
+      Sabado: { muscles: [], exercises: [] }
+    },
+    history: []
+  });
+  assert.equal(result.days['Terça'].muscles[0], 'Bíceps');
+  assert.equal(result.days['Terça'].exercises[0].muscle, 'Bíceps');
+});
 test('rejeita backup inválido sem alterar a ficha original', () => {
   const state = defaultState();
   state.days.Terça.exercises.push({ id: 'invalid' });
