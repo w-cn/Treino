@@ -190,7 +190,7 @@ function renderBuilderDay(day,open){
   const d=state.days[day];
   return `<details class="builder-day" data-day="${day}" ${open?"open":""}>
     <summary>${day} — ${d.muscles.length?esc(d.muscles.join(" + ")):"escolha os músculos"}</summary>
-    <div class="muscles">${MUSCLES.map(m=>`<button class="muscle-chip ${d.muscles.includes(m)?"selected":""}" data-muscle="${esc(m)}">${d.muscles.includes(m)?"✓ ":""}${esc(m)}</button>`).join("")}</div>
+    <div class="muscles">${MUSCLES.map(m=>`<button class="muscle-card ${d.muscles.includes(m)?"selected":""}" data-muscle="${esc(m)}">${MUSCLE_ILLUSTRATIONS[m]?`<img loading="lazy" src="${esc(MUSCLE_ILLUSTRATIONS[m])}" alt="Ilustração de ${esc(m)}">`:'<span class="muscle-card-empty">+</span>'}<span class="muscle-card-label">${d.muscles.includes(m)?"✓ ":""}${esc(m)}</span></button>`).join("")}</div>
     ${d.muscles.map(m=>renderPicker(day,m,"")).join("")}
     <div class="selected-list">${d.exercises.length?d.exercises.map((e,idx)=>renderSelectedItem(day,e.id,idx)).join(""):"<div class='empty'>Nenhum exercício selecionado ainda.</div>"}</div>
     <div class="save-row"><button class="btn primary" data-save-day>💾 Salvar ${day}</button><button class="btn" data-go-ficha="${day}">📋 Ver ficha</button></div>
@@ -198,9 +198,8 @@ function renderBuilderDay(day,open){
 }
 function renderPicker(day,muscle,query){
   const d=state.days[day], selected=new Set(d.exercises.map(e=>e.id));
-  const arr=CATALOG.filter(x=>belongsTo(x,muscle) && (!query||x.name.toLowerCase().includes(query.toLowerCase())));
+      const arr=CATALOG.filter(x=>belongsTo(x,muscle) && (!query||x.name.toLowerCase().includes(query.toLowerCase()) || (x.muscles || []).some(muscle => muscle.toLowerCase().includes(query.toLowerCase()))));
      return `<div class="exercise-picker open" data-picker="${esc(muscle)}">
-       <div class="muscle-illustration">${MUSCLE_ILLUSTRATIONS[muscle]?`<img loading="lazy" src="${esc(MUSCLE_ILLUSTRATIONS[muscle])}" alt="Ilustração anatômica: ${esc(muscle)}">`:''}<div><strong>${esc(muscle)}</strong><span>Musculatura trabalhada</span></div></div>
        <div class="picker-head"><h4>${esc(muscle)}</h4><span class="selected-mark">${d.exercises.filter(e=>e.muscle===muscle).length} selecionado(s)</span></div>
     <input class="picker-search" data-muscle="${esc(muscle)}" placeholder="🔎 Pesquisar em ${esc(muscle)}..." value="${esc(query)}">
     <div class="picker-grid">${arr.map(x=>`<div class="pick-card">
