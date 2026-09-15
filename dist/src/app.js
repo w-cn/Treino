@@ -290,17 +290,39 @@ function generatePrompt(){
   const data=new FormData(form);
   const value=name=>String(data.get(name)||'').trim()||'Não informado';
   const days=data.getAll('days');
+  const muscles=data.getAll('promptMuscles');
   const output=`# Prompt para gerar meu treino importável\n\nVocê é um planejador de treinos. Monte um treino usando exclusivamente os músculos e exercícios do catálogo abaixo.\n\n## Minhas preferências\n- Objetivo: ${value('objective')}\n- Nível: ${value('level')}\n- Dias disponíveis: ${days.join(', ')||'Nenhum informado'}\n- Duração por treino: ${value('duration')}\n- Restrições ou dores: ${value('restrictions')}\n- Equipamentos: ${value('equipment')}\n- Preferências: ${value('preferences')}\n- Exercícios obrigatórios: ${value('required')}\n- Exercícios a evitar: ${value('avoid')}\n\n## Regras obrigatórias\n1. Responda somente com um JSON válido, sem texto extra e sem crases.\n2. Use exatamente os dias Segunda, Terça, Quarta, Quinta, Sexta, Sábado e Domingo.\n3. Preencha apenas os dias disponíveis; os outros devem ficar vazios.\n4. Use somente IDs deste catálogo. Nunca invente ou altere IDs.\n5. Use done como false, weight como "", actualReps como "", note como "".\n6. Use sets, targetReps e rest como strings. Rest é em segundos.\n7. Não inclua GIFs, fontes, descrições ou histórico preenchido.\n8. Escolha volume coerente com o objetivo, nível, tempo e recuperação. Oito exercícios são opções; não é obrigatório executar todos no mesmo dia.\n9. Antes de responder, confira se cada ID e muscle existem neste catálogo.\n\n## Formato obrigatório\n\\`\`\`json\n{\n  "version": 1,\n  "days": {\n    "Segunda": { "muscles": [], "exercises": [] },\n    "Terça": { "muscles": [], "exercises": [] },\n    "Quarta": { "muscles": [], "exercises": [] },\n    "Quinta": { "muscles": [], "exercises": [] },\n    "Sexta": { "muscles": [], "exercises": [] },\n    "Sábado": { "muscles": [], "exercises": [] },\n    "Domingo": { "muscles": [], "exercises": [] }\n  },\n  "history": []\n}\n\`\`\`\n\nCada exercício deve ter: id, muscle, done, sets, targetReps, weight, actualReps, rest e note.\n\n## Catálogo oficial de músculos e IDs\n\n${catalogForPrompt()}`;
-  document.getElementById('promptOutput').value=output.replace('\u007f','');
+  document.getElementById('promptOutput').value=output.replace('\u007f','')+`\n\n## Parametros solicitados\n- Musculos: ${muscles.join(', ')||'Não informado'}\n- Exercicios por musculo: ${value('exerciseCount')}\n- Cardio por sessão: ${value('cardioMinutes')} minutos`;
 }
 function setupPromptGenerator(){
   const form=document.getElementById('promptForm');
   if(!form)return;
   document.getElementById('promptDays').innerHTML=DAYS.map(day=>`<label><input type="checkbox" name="days" value="${esc(day)}" checked> ${esc(day)}</label>`).join('');
+  document.getElementById('promptMuscles').innerHTML=MUSCLES.filter(muscle=>muscle!=='Cardio').map(muscle=>`<label><input type="checkbox" name="promptMuscles" value="${esc(muscle)}"> ${esc(muscle)}</label>`).join('');
   form.addEventListener('submit',event=>{event.preventDefault();generatePrompt();toast('Documento gerado.');});
+  document.getElementById('applyPromptWorkout').onclick=applyPromptWorkout;
   document.getElementById('copyPrompt').onclick=async()=>{generatePrompt();const output=document.getElementById('promptOutput');try{await navigator.clipboard.writeText(output.value);}catch{output.select();document.execCommand('copy');}toast('Documento copiado.');};
   document.getElementById('downloadPrompt').onclick=()=>{generatePrompt();const blob=new Blob([document.getElementById('promptOutput').value],{type:'text/markdown;charset=utf-8'});const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='prompt-gerador-de-treino.md';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Documento baixado.');};
   generatePrompt();
+}
+
+function applyPromptWorkout(){
+  const data=new FormData(document.getElementById('promptForm'));
+  const days=data.getAll('days'), muscles=data.getAll('promptMuscles');
+  const count=Math.max(1,Math.min(10,Number(data.get('exerciseCount'))||3));
+  const cardioMinutes=Math.max(0,Math.min(1440,Number(data.get('cardioMinutes'))||0));
+  if(!days.length||!muscles.length){toast('Escolha pelo menos um dia e um músculo.');return;}
+  if(!confirm('Aplicar este treino e substituir os exercícios dos dias escolhidos?'))return;
+  const selectedDays=days.map(day=>state.days[day]).filter(Boolean);
+  selectedDays.forEach(day=>{day.muscles=[];day.exercises=[];});
+  muscles.forEach((muscle,index)=>{
+    const day=selectedDays[index%selectedDays.length];
+    day.muscles.push(muscle);
+    CATALOG.filter(exercise=>exercise.muscle===muscle).slice(0,count).forEach(exercise=>day.exercises.push(createExercise(exercise.id,muscle)));
+  });
+  if(cardioMinutes>0)selectedDays.forEach(day=>{day.muscles.push('Cardio');day.exercises.push({...createExercise('cardio-walking-on-incline-treadmill','Cardio'),duration:String(cardioMinutes)});});
+  selectedDays.forEach(day=>{day.muscles=[...new Set(day.muscles)];});
+  saveState();renderFicha();renderBuilder();switchView('fichaView');toast('Treino aplicado à sua ficha.');
 }
 
 function openAddModal(id){

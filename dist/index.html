@@ -64,9 +64,12 @@
       <label>Preferências<input name="preferences" placeholder="Ex.: mais máquinas, incluir cardio"></label>
       <label>Exercícios obrigatórios<input name="required" placeholder="Ex.: supino reto, remada baixa"></label>
       <label>Exercícios a evitar<input name="avoid" placeholder="Ex.: levantamento terra"></label>
+      <label>Exercícios por músculo<input name="exerciseCount" type="number" min="1" max="10" value="3"></label>
+      <label>Cardio por sessão (minutos)<input name="cardioMinutes" type="number" min="0" max="1440" value="15"></label>
     </div>
+    <fieldset class="prompt-muscles"><legend>Músculos para montar</legend><div id="promptMuscles"></div></fieldset>
     <fieldset class="prompt-days"><legend>Dias disponíveis</legend><div id="promptDays"></div></fieldset>
-    <div class="prompt-actions"><button class="btn primary" type="submit">⚙️ Gerar documento</button><button class="btn" type="button" id="copyPrompt">📋 Copiar</button><button class="btn" type="button" id="downloadPrompt">⬇️ Baixar .md</button></div>
+    <div class="prompt-actions"><button class="btn primary" type="submit">⚙️ Gerar documento</button><button class="btn primary" type="button" id="applyPromptWorkout">✅ Aplicar treino</button><button class="btn" type="button" id="copyPrompt">📋 Copiar</button><button class="btn" type="button" id="downloadPrompt">⬇️ Baixar .md</button></div>
   </form>
   <textarea id="promptOutput" class="prompt-output" aria-label="Documento gerado" spellcheck="false"></textarea>
 </section>
