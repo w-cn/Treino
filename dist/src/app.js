@@ -243,6 +243,25 @@ function renderLibrary(){
 }
 document.getElementById("librarySearch").addEventListener("input",renderLibrary);
 
+function expandRecommendationWorkout(workout){
+  const exercises=workout.exercises.map(([name,details])=>({name,details,exercise:CATALOG.find(x=>x.name===name)}));
+  const selected=new Set(exercises.map(item=>item.exercise?.id).filter(Boolean));
+  const muscles=new Set(exercises.flatMap(item=>item.exercise?.muscles||[item.exercise?.muscle]).filter(Boolean));
+  const candidates=CATALOG.filter(exercise=>!selected.has(exercise.id)&&muscles.has(exercise.muscle));
+  for(const exercise of candidates){
+    if(exercises.length>=8)break;
+    exercises.push({name:exercise.name,details:exercise.kind==='cardio'?'20–30 min':'2–3 x 8–12',exercise});
+  }
+  if(exercises.length<8){
+    for(const exercise of CATALOG){
+      if(exercises.length>=8)break;
+      if(selected.has(exercise.id)||exercises.some(item=>item.exercise?.id===exercise.id))continue;
+      exercises.push({name:exercise.name,details:exercise.kind==='cardio'?'20–30 min':'2–3 x 8–12',exercise});
+    }
+  }
+  return exercises;
+}
+
 function renderRecommendations(){
   const item=RECOMMENDATIONS.find(x=>x.id===currentRecommendation)||RECOMMENDATIONS[0];
   const recommendedExercises=[];
@@ -256,7 +275,7 @@ function renderRecommendations(){
   document.getElementById('recommendationContent').innerHTML=`
     <div class="recommendation-hero"><div><span class="eyebrow">${item.target}</span><h3>${item.label}</h3><p>${item.summary}</p></div><span class="recommendation-mark">${item.icon}</span></div>
     <div class="recommendation-grid"><section class="recommendation-panel"><h4>Diretrizes praticas</h4><div class="recommendation-list">${item.prescription.map(([label,value])=>`<div><strong>${label}</strong><span>${value}</span></div>`).join('')}</div></section><section class="recommendation-panel"><h4>Resumo da semana</h4><ol class="week-list">${item.week.map(day=>`<li>${day}</li>`).join('')}</ol><p class="recommendation-note"><strong>Progressao:</strong> ${item.progression}</p></section></div>
-    <section class="recommendation-workouts"><h4>Exercicios sugeridos da sua biblioteca</h4><p class="recommendation-intro">Cada sessao abaixo usa exercicios da sua biblioteca e mostra o GIF, o nome e o volume sugerido.</p>${item.workouts.map(workout=>`<article class="workout-plan"><div class="workout-plan-head"><strong>${workout.day}</strong><span>${workout.focus}</span></div><div class="workout-exercises">${workout.exercises.map(([name,details])=>{const exercise=CATALOG.find(x=>x.name===name);return exercise?`<div class="workout-exercise"><img loading="lazy" src="${esc(exercise.gif)}" alt="Execucao: ${esc(exercise.name)}"><div class="workout-exercise-caption"><span>${esc(exercise.name)}</span><b>${esc(details)}</b></div></div>`:''}).join('')}</div></article>`).join('')}</section>
+    <section class="recommendation-workouts"><h4>Exercicios sugeridos da sua biblioteca</h4><p class="recommendation-intro">Cada sessao traz pelo menos 8 opcoes da sua biblioteca. O estudo orienta volume semanal e recuperacao; nao e necessario executar todas no mesmo dia.</p>${item.workouts.map(workout=>`<article class="workout-plan"><div class="workout-plan-head"><strong>${workout.day}</strong><span>${workout.focus}</span></div><div class="workout-exercises">${expandRecommendationWorkout(workout).map(({name,details,exercise})=>exercise?`<div class="workout-exercise"><img loading="lazy" src="${esc(exercise.gif)}" alt="Execucao: ${esc(exercise.name)}"><div class="workout-exercise-caption"><span>${esc(name)}</span><b>${esc(details)}</b></div></div>`:'').join('')}</div></article>`).join('')}</section>
     <section class="recommendation-source"><h4>Base usada</h4><p>${item.reference}</p><a class="source" href="${item.link}" target="_blank" rel="noopener">Abrir referencia ↗</a></section>
     <p class="recommendation-disclaimer">Diretriz geral para adultos saudaveis. Dor, lesao, gestacao, doencas ou uso de medicamentos pedem avaliacao profissional. Ajuste exercicios, volume e cardio ao seu nivel, rotina e recuperacao.</p>`;
 }
