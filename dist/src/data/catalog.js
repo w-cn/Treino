@@ -1,6 +1,7 @@
 
 
 import { MEDIA_OVERRIDES } from './media-overrides.js';
+import { CARDIO } from './cardio.js';
 
 const FULL_CATALOG={
  'Bíceps':{
@@ -99,7 +100,7 @@ function allCatalog(){
       const v = vmap[key];
       const item = {
         id: slug(muscle+"-"+x[0]),
-        name:x[0], muscle, equipment:x[1]||"Não informado",
+        name:x[0], muscle, muscles:[muscle], equipment:x[1]||"Não informado",
         gif:(v && v.gif) || x[2] || "",
         description:x[3] || "Consulte a fonte para a execução detalhada.",
         source:(v && v.source) || group.source || ""
@@ -107,6 +108,7 @@ function allCatalog(){
       if(!seen.has(key)) { seen.set(key,item); out.push(item); }
       else {
         const old=seen.get(key);
+        if(!old.muscles.includes(muscle))old.muscles.push(muscle);
         if(!old.gif && item.gif) old.gif=item.gif;
         if(old.description==="Consulte a fonte para a execução detalhada." && item.description) old.description=item.description;
       }
@@ -115,7 +117,13 @@ function allCatalog(){
   return out;
 }
 const BASE_CATALOG = allCatalog();
-const CATALOG = BASE_CATALOG.map(exercise => ({ ...exercise, ...MEDIA_OVERRIDES[exercise.id] }));
+const CATALOG = [...BASE_CATALOG.map(exercise => ({ ...exercise, ...MEDIA_OVERRIDES[exercise.id] })), ...CARDIO];
+const machineRow = CATALOG.find(x => x.name === 'Remada na máquina (articulada)');
+Object.assign(machineRow, {
+  gif: 'https://c.tenor.com/ft6FHrqty-8AAAAd/tenor.gif',
+  mediaSource: 'https://tenor.com/view/remada-pronada-maquina-gif-9141890660636150767',
+  mediaCaption: 'Demonstração com pegada pronada e apoio para o peito.'
+});
 const BY_ID = Object.fromEntries(CATALOG.map(x=>[x.id,x]));
 const MUSCLES = [...new Set(CATALOG.map(x=>x.muscle))];
 

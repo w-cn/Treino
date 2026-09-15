@@ -1,4 +1,4 @@
-const placeholder = '/public/media-unavailable.svg';
+const placeholder = './public/media-unavailable.svg';
 // Capture handles errors from dynamically rendered images, including lazy images.
 document.addEventListener('error', event => {
   const image = event.target;

@@ -2,6 +2,7 @@ import { CATALOG, BY_ID, MUSCLES } from './data/catalog.js';
 import { DAYS } from './data/state.js';
 import { loadState, persistState, flushState, storageStatus } from './services/storage.js';
 import './services/media.js';
+import { belongsTo, createExercise, reserveGroups, replacementTargets, replaceExercise } from './data/workout.js';
 const DEFAULT_REST = { "Peito":"90–120 s","Costas":"90–120 s","Bíceps":"60–90 s","Tríceps":"60–90 s","Deltoides":"60–90 s","Ombros":"60–90 s","Pernas":"90–120 s","Panturrilhas":"60–90 s","Abdômen":"60–90 s","Trapézio":"60–90 s","Antebraço":"60–90 s","Glúteos":"60–90 s" };
 let state = await loadState();
 document.getElementById('storageStatus').textContent=storageStatus;
@@ -49,22 +50,23 @@ function renderFichaDay(day,active){
   if(!active) return `<div class="day-panel"></div>`;
   const groups=[];
   groups.push([...data.exercises].sort((a,b)=>Number(!!a.done)-Number(!!b.done)).map(e=>renderExerciseCard(e.id,day)).join(''));
-  const extras=suggestionsFor(day);
+  const extras=reserveGroups(data);
   return `<div class="day-panel active">
     <div class="day-title"><h3>${day} — ${data.muscles.length?esc(data.muscles.join(" + ")):"Nenhum treino configurado"}</h3>
     <p>${data.exercises.length} exercício(s) configurado(s)</p></div>
     ${groups.join("") || `<div class="empty">Ainda não há exercícios neste dia. Vá em <b>Meu Treino</b> para montar sua ficha.</div>`}
-    ${data.exercises.length ? `<div class="suggestions"><h3>Mais exercícios</h3><p>Adicione outro exercício ao treino deste dia.</p><div class="suggestion-grid">${extras.map(x=>renderSuggestion(x,day)).join("")}</div></div>`:""}
+    ${data.muscles.length ? `<section class="suggestions"><h3>Exercícios reservas</h3><p>Aparelho ocupado ou prefere outra opção? Escolha uma reserva e substitua um exercício da ficha.</p>${extras.map(group=>`<section class="reserve-group"><h4>${esc(group.muscle)}</h4><div class="suggestion-grid">${group.exercises.map(x=>renderSuggestion(x,day,group.muscle)).join('')||'<p class="empty">Todas as opções deste grupo já estão na ficha.</p>'}</div></section>`).join('')}</section>`:""}
   </div>`;
 }
 function renderExerciseCard(id,day){
   const x=exerciseData(id), e=state.days[day].exercises.find(z=>z.id===id);
   if(!x||!e)return "";
   const done=!!e.done, restSeconds=restToSeconds(e.rest||DEFAULT_REST[x.muscle]||"90");
+  const cardio=x.kind==='cardio';
   return `<article class="exercise-card ${done?"done":""}" data-id="${esc(id)}" data-day="${esc(day)}">
     <div class="card-main">
       <div class="card-info">
-        <div class="eyebrow">${esc(x.muscle)}</div>
+        <div class="eyebrow">${esc(e.muscle)}</div>
         <div class="card-title">${esc(x.name)}</div>
         <div class="card-desc">${esc(x.description)}</div>${mediaDetails(x)}
         <div class="meta"><span class="tag">🔧 ${esc(x.equipment)}</span>${x.gif?`<span class="tag">${/\.gif$/i.test(x.gif)?'🎞️ GIF':'🖼️ Imagem'}</span>`:'<span class="tag">Sem demonstração</span>'}</div>
@@ -72,29 +74,41 @@ function renderExerciseCard(id,day){
       <div class="media ${x.gif?"":"missing"}">${x.gif?`<img loading="lazy" src="${esc(x.gif || "/public/media-unavailable.svg")}" alt="Execução: ${esc(x.name)}">`:""}</div>
     </div>
     <div class="fields">
+      ${cardio?`<div class="field"><label>Tempo (min)</label><input data-field="duration" type="number" min="0.1" max="1440" step="0.1" value="${esc(e.duration||'')}" placeholder="ex.: 20"></div>
+      <div class="field"><label>Distância (km)</label><input data-field="distance" type="number" min="0" step="0.01" value="${esc(e.distance||'')}" placeholder="Opcional"></div>
+      <div class="field"><label>Intensidade / nível</label><input data-field="intensity" value="${esc(e.intensity||'')}" placeholder="Opcional"></div>`:`
       <div class="field"><label>Séries</label><input type="number" min="1" max="100" data-field="sets" value="${esc(e.sets||"3")}"></div>
       <div class="field"><label>Reps alvo</label><input data-field="targetReps" value="${esc(e.targetReps||"8–12")}"></div>
       <div class="field"><label>Peso (kg)</label><input data-field="weight" type="number" min="0" step="0.5" value="${esc(e.weight||"")}" placeholder="ex.: 20"></div>
-      <div class="field"><label>Reps feitas</label><input data-field="actualReps" type="number" min="0" step="1" value="${esc(e.actualReps||"")}" placeholder="ex.: 10"></div>
+      `}
     </div>
-    <div class="note-row"><label class="sub">Descanso (segundos)</label><input data-field="rest" type="number" min="1" max="7200" value="${restSeconds}"></div>
+    ${cardio?'':`<div class="note-row"><label class="sub">Descanso (segundos)</label><input data-field="rest" type="number" min="1" max="7200" value="${restSeconds}"></div>`}
     <div class="controls">
       <button class="btn done-btn" data-action="done">${done?"↩️ Desfazer":"✓ Concluído"}</button>
-      <button class="btn" data-action="timer" data-seconds="${restSeconds}">⏱️ Iniciar descanso</button>
+      <button class="btn" data-action="timer" data-seconds="${cardio?Math.round(Number(e.duration||0)*60):restSeconds}" ${cardio&&!Number(e.duration)?'disabled':''}>${cardio?'▶ Iniciar cardio':'⏱️ Iniciar descanso'}</button>
       <span class="timer" data-timer="${day}:${id}">--:--</span>
       <button class="btn" data-action="openGif">Ver demonstração</button>
     </div>
     <div class="note-row"><input data-field="note" value="${esc(e.note||"")}" placeholder="Observação: última série difícil, aumentar carga..."></div>
   </article>`;
 }
-function renderSuggestion(x,day){
-  return `<div class="suggestion"><img loading="lazy" src="${esc(x.gif || "/public/media-unavailable.svg")}" alt=""><div class="suggestion-body"><strong>${esc(x.name)}</strong><small>${esc(x.muscle)} · ${esc(x.equipment)}</small><button class="btn primary" data-suggest="${esc(x.id)}" data-day="${esc(day)}">Adicionar à ficha</button></div></div>`;
+function renderSuggestion(x,day,muscle){
+  const available=replacementTargets(state.days[day],x.id,muscle).length>0;
+  return `<article class="suggestion"><img loading="lazy" src="${esc(x.gif || "/public/media-unavailable.svg")}" alt="Demonstração: ${esc(x.name)}"><div class="suggestion-body"><strong>${esc(x.name)}</strong><small>${esc(x.equipment)}</small>${x.mediaCaption?`<small>${esc(x.mediaCaption)}</small>`:''}<button class="btn primary" data-suggest="${esc(x.id)}" data-day="${esc(day)}" data-muscle="${esc(muscle)}" ${available?'':'disabled'}>Substituir</button>${available?'':'<small>Nenhum exercício pendente neste grupo.</small>'}</div></article>`;
 }
-function suggestionsFor(day){
-  const data=state.days[day], selected=new Set(data.exercises.map(e=>e.id)), out=[];
-  const pool=CATALOG.filter(x=>data.muscles.includes(x.muscle)&&!selected.has(x.id)&&x.gif);
-  for(const x of pool){if(!out.some(y=>y.muscle===x.muscle)||out.length<3)out.push(x);if(out.length>=Math.max(3,data.muscles.length*2))break}
-  return out.slice(0,6);
+function openReplaceModal(day,newId,muscle){
+  const candidates=replacementTargets(state.days[day],newId,muscle);
+  const cardio=BY_ID[newId].kind==='cardio';
+  document.getElementById('modalTitle').textContent='Usar '+BY_ID[newId].name;
+  document.getElementById('modalContent').innerHTML=`<p class="sub">Qual exercício de ${esc(muscle)} você quer substituir? ${cardio?'A troca mantém a posição e o tempo planejado. Ajuste a intensidade para a nova atividade.':'A troca mantém a posição, séries e repetições. Ajuste a carga para o novo exercício.'}</p><div class="replacement-options">${candidates.map(e=>`<button class="btn" data-replace-id="${esc(e.id)}">Substituir ${esc(BY_ID[e.id].name)}</button>`).join('')||'<p class="empty">Não há exercícios pendentes para substituir.</p>'}</div>`;
+  document.querySelectorAll('[data-replace-id]').forEach(button=>button.onclick=()=>{
+    try{
+      replaceExercise(state.days[day],button.dataset.replaceId,newId,muscle);
+      delete timers[day+':'+button.dataset.replaceId];
+      saveState();closeModal();renderFicha();toast(cardio?'Cardio substituído. Ajuste a intensidade antes de começar.':'Exercício substituído. Ajuste a carga antes de começar.');
+    }catch(error){toast(error.message);}
+  });
+  document.getElementById('imageModal').classList.add('open');
 }
 function bindFicha(){
   document.querySelectorAll("[data-action='done']").forEach(btn=>btn.onclick=()=>{
@@ -107,6 +121,7 @@ function bindFicha(){
   document.querySelectorAll(".exercise-card input[data-field]").forEach(inp=>inp.addEventListener("input",()=>{
     const card=inp.closest(".exercise-card"), day=card.dataset.day,id=card.dataset.id,e=state.days[day].exercises.find(z=>z.id===id);
     if(!inp.checkValidity())return; e[inp.dataset.field]=inp.value; saveState(); if(inp.dataset.field==="rest") card.querySelector("[data-action=timer]").dataset.seconds=restToSeconds(inp.value);
+    if(inp.dataset.field==='duration'){const button=card.querySelector('[data-action=timer]');button.dataset.seconds=Math.round(Number(inp.value)*60);button.disabled=!(Number(inp.value)>0);}
   }));
   document.querySelectorAll('.exercise-card input[data-field]').forEach(inp=>{
     inp.id=inp.closest('.exercise-card').dataset.day+'-'+inp.closest('.exercise-card').dataset.id+'-'+inp.dataset.field;
@@ -119,8 +134,7 @@ function bindFicha(){
     const card=btn.closest(".exercise-card"), x=exerciseData(card.dataset.id); openModal(x);
   });
   document.querySelectorAll("[data-suggest]").forEach(btn=>btn.onclick=()=>{
-    const day=btn.dataset.day,id=btn.dataset.suggest,x=exerciseData(id);
-    addExercise(day,id); saveState(); renderFicha(); toast(x.name+" adicionado ao final da ficha.");
+    openReplaceModal(btn.dataset.day,btn.dataset.suggest,btn.dataset.muscle);
   });
 }
 function restToSeconds(v){
@@ -134,7 +148,7 @@ function updateTimers(){
   Object.entries(timers).forEach(([id,end])=>{
     const left=Math.max(0,Math.ceil((end-Date.now())/1000));
     document.querySelectorAll('[data-timer]').forEach(n=>{if(n.dataset.timer===id)n.textContent=String(Math.floor(left/60)).padStart(2,'0')+':'+String(left%60).padStart(2,'0');});
-    if(left===0){delete timers[id];toast('⏰ Descanso concluído!');}
+    if(left===0){delete timers[id];toast('⏰ Tempo concluído!');}
   });
 }
 setInterval(updateTimers,250);
@@ -158,7 +172,7 @@ function renderBuilder(){
       const q=searchText(inp.value);
       inp.closest('.exercise-picker').querySelectorAll('.pick-card').forEach(card=>{card.hidden=!searchText(card.querySelector('strong').textContent).includes(q);});
     });
-    el.querySelectorAll(".pick-add").forEach(btn=>btn.onclick=()=>{addExercise(day,btn.dataset.id);saveState();renderBuilder();toast("Exercício adicionado.");});
+    el.querySelectorAll(".pick-add").forEach(btn=>btn.onclick=()=>{addExercise(day,btn.dataset.id,btn.closest('[data-picker]').dataset.picker);saveState();renderBuilder();toast("Exercício adicionado.");});
     el.querySelectorAll(".pick-remove").forEach(btn=>btn.onclick=()=>{removeExercise(day,btn.dataset.id);saveState();renderBuilder();});
     el.querySelectorAll(".move-up").forEach(btn=>btn.onclick=()=>moveExercise(day,btn.dataset.id,-1));
     el.querySelectorAll(".move-down").forEach(btn=>btn.onclick=()=>moveExercise(day,btn.dataset.id,1));
@@ -177,7 +191,7 @@ function renderBuilderDay(day,open){
 }
 function renderPicker(day,muscle,query){
   const d=state.days[day], selected=new Set(d.exercises.map(e=>e.id));
-  const arr=CATALOG.filter(x=>x.muscle===muscle && (!query||x.name.toLowerCase().includes(query.toLowerCase())));
+  const arr=CATALOG.filter(x=>belongsTo(x,muscle) && (!query||x.name.toLowerCase().includes(query.toLowerCase())));
   return `<div class="exercise-picker open" data-picker="${esc(muscle)}">
     <div class="picker-head"><h4>${esc(muscle)} — escolha seus exercícios</h4><span class="selected-mark">${d.exercises.filter(e=>e.muscle===muscle).length} selecionado(s)</span></div>
     <input class="picker-search" data-muscle="${esc(muscle)}" placeholder="🔎 Pesquisar em ${esc(muscle)}..." value="${esc(query)}">
@@ -193,13 +207,11 @@ function renderSelectedItem(day,id,idx){
   return `<div class="selected-item"><img src="${esc(x.gif || "/public/media-unavailable.svg")}" alt=""><span><b>${idx+1}.</b> ${esc(x.name)}<small style="display:block;color:var(--muted)">${esc(x.muscle)}</small></span>
     <button class="btn order-btn move-up" data-id="${esc(id)}">↑</button><button class="btn order-btn move-down" data-id="${esc(id)}">↓</button><button class="btn order-btn danger pick-remove" data-id="${esc(id)}">✕</button></div>`;
 }
-function addExercise(day,id){
+function addExercise(day,id,muscle=BY_ID[id].muscle){
   const d=state.days[day];if(d.exercises.some(e=>e.id===id))return;
-  const x=BY_ID[id];
-  if(!d.muscles.includes(x.muscle))d.muscles.push(x.muscle);
-  d.exercises.push({id,muscle:x.muscle,sets:"3",targetReps:defaultReps(x.muscle),weight:"",actualReps:"",rest:DEFAULT_REST[x.muscle]||"90 s",note:"",done:false});
+  if(!d.muscles.includes(muscle))d.muscles.push(muscle);
+  d.exercises.push(createExercise(id,muscle));
 }
-function defaultReps(m){return ["Peito","Costas","Pernas"].includes(m)?"8–12":"10–15"}
 function removeExercise(day,id){state.days[day].exercises=state.days[day].exercises.filter(e=>e.id!==id)}
 function moveExercise(day,id,dir){
   const a=state.days[day].exercises,i=a.findIndex(e=>e.id===id),j=i+dir;if(i<0||j<0||j>=a.length)return;
@@ -215,7 +227,7 @@ function renderLibrary(){
   filter.innerHTML=cats.map(m=>`<button class="btn ${m===currentLibraryMuscle?"primary":""}" data-muscle="${esc(m)}">${esc(m)}</button>`).join("");
   filter.querySelectorAll("button").forEach(b=>b.onclick=()=>{currentLibraryMuscle=b.dataset.muscle;renderLibrary()});
   const q=searchText(document.getElementById("librarySearch").value);
-  const arr=CATALOG.filter(x=>(currentLibraryMuscle==="Todos"||x.muscle===currentLibraryMuscle)&&(!q||searchText(x.name).includes(q)||searchText(x.muscle).includes(q)||searchText(x.equipment).includes(q)));
+  const arr=CATALOG.filter(x=>(currentLibraryMuscle==="Todos"||belongsTo(x,currentLibraryMuscle))&&(!q||searchText(x.name).includes(q)||searchText((x.muscles||[x.muscle]).join(' ')).includes(q)||searchText(x.equipment).includes(q)));
   document.getElementById("catalogGrid").innerHTML=arr.map(x=>`<article class="lib-card">
     ${x.gif?`<img loading="lazy" src="${esc(x.gif || "/public/media-unavailable.svg")}" alt="Execução: ${esc(x.name)}">`:`<div class="empty" style="height:160px;display:flex;align-items:center;justify-content:center;border:0;border-radius:0">GIF não disponível no material atual</div>`}
     <div class="lib-body"><strong>${esc(x.name)}</strong><div class="lib-meta"><span class="tag">${esc(x.muscle)}</span><span class="tag">🔧 ${esc(x.equipment)}</span></div><p>${esc(x.description)}</p>${mediaDetails(x)}
@@ -266,7 +278,7 @@ document.getElementById('importState').onchange=async e=>{
 };
 document.getElementById('showHistory').onclick=()=>{
   document.getElementById('modalTitle').textContent='Histórico de exercícios';
-  document.getElementById('modalContent').innerHTML=[...state.history].reverse().map(h=>'<div class="history-item"><strong>'+esc(BY_ID[h.id]?.name||h.id)+'</strong><p class="sub">'+esc(h.day)+' · '+esc(new Date(h.completedAt).toLocaleString('pt-BR'))+' · '+esc(h.weight||'0')+' kg · '+esc(h.actualReps||'—')+' reps · '+esc(h.sets)+' séries</p></div>').join('')||'<p class="empty">Conclua um exercício para registrar seu histórico.</p>';
+  document.getElementById('modalContent').innerHTML=[...state.history].reverse().map(h=>'<div class="history-item"><strong>'+esc(BY_ID[h.id]?.name||h.id)+'</strong><p class="sub">'+esc(h.day)+' · '+esc(new Date(h.completedAt).toLocaleString('pt-BR'))+' · '+(BY_ID[h.id]?.kind==='cardio'?esc(h.duration||'—')+' min'+(h.distance?' · '+esc(h.distance)+' km':'')+(h.intensity?' · '+esc(h.intensity):''):esc(h.weight||'0')+' kg · '+esc(h.targetReps||h.actualReps||'—')+' reps · '+esc(h.sets)+' séries')+'</p></div>').join('')||'<p class="empty">Conclua um exercício para registrar seu histórico.</p>';
   document.getElementById('imageModal').classList.add('open');
 };
 window.addEventListener('storage-status',e=>{document.getElementById('storageStatus').textContent=e.detail;});

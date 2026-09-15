@@ -22,10 +22,11 @@ export function validateState(value) {
       if (!exercise || !Object.hasOwn(BY_ID, exercise.id)) throw new Error('Exercício desconhecido no backup.');
       if (ids.has(exercise.id)) throw new Error('Exercício duplicado no mesmo dia.');
       ids.add(exercise.id);
-      const muscle = BY_ID[exercise.id].muscle;
+      const item = BY_ID[exercise.id];
+      const muscle = (item.muscles || [item.muscle]).includes(exercise.muscle) ? exercise.muscle : item.muscle;
       if (!result.days[day].muscles.includes(muscle)) result.days[day].muscles.push(muscle);
       const out = { id: exercise.id, muscle, done: !!exercise.done };
-      for (const key of ['sets', 'targetReps', 'weight', 'actualReps', 'rest', 'note']) {
+      for (const key of ['sets', 'targetReps', 'weight', 'actualReps', 'rest', 'note', 'duration', 'distance', 'intensity']) {
         out[key] = String(exercise[key] ?? '').slice(0, key === 'note' ? 2000 : 100);
       }
       if (exercise.completedAt && Number.isFinite(Date.parse(exercise.completedAt))) out.completedAt = exercise.completedAt;
@@ -36,7 +37,7 @@ export function validateState(value) {
   result.history = (value.history || []).map(record => {
     if (!record || !Object.hasOwn(BY_ID, record.id) || !DAYS.includes(record.day) || !Number.isFinite(Date.parse(record.completedAt))) throw new Error('Registro de histórico inválido.');
     const out = { id: record.id, day: record.day, completedAt: record.completedAt };
-    for (const key of ['sets', 'targetReps', 'weight', 'actualReps', 'rest', 'note']) out[key] = String(record[key] ?? '').slice(0, key === 'note' ? 2000 : 100);
+    for (const key of ['sets', 'targetReps', 'weight', 'actualReps', 'rest', 'note', 'duration', 'distance', 'intensity']) out[key] = String(record[key] ?? '').slice(0, key === 'note' ? 2000 : 100);
     return out;
   });
   return result;
