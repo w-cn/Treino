@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#07101d">
-<title>Meu Treino — Ficha + Biblioteca</title>
+<title>Frango App — Treino e Biblioteca</title>
 <link rel="stylesheet" href="./src/styles/main.css">
 <link rel="stylesheet" href="./src/styles/navigation.css">
 </head>
@@ -26,7 +26,7 @@
 <div class="pagebar"><span id="currentPageTitle">Início</span></div>
 <section id="inicioView" class="view active" aria-label="Início">
 <header>
-  <h1>🏋️ Meu Treino</h1>
+  <h1 class="brand-title"><img src="./public/frango-app.svg" alt=""> Frango App</h1>
   <p class="sub">Monte seus dias, escolha os músculos e exercícios e acompanhe cargas, repetições e histórico neste navegador.</p>
   <div class="topstats">
     <span class="pill"><span id="storageStatus">Conectando ao banco local…</span></span>
@@ -56,7 +56,7 @@
 </section>
 
 <section id="bibliotecaView" class="view">
-  <div class="section-head"><div><h2>Biblioteca de Exercícios</h2><p>Pesquise por exercício, músculo ou equipamento. Consulte a fonte para detalhes de execução.</p></div></div>
+  <div class="section-head"><div><h2>Biblioteca de Exercícios <a class="section-reference" href="https://www.hipertrofia.org/blog/exercicios-de-musculacao/" target="_blank" rel="noopener">Referência ↗</a></h2><p>Pesquise por exercício, músculo ou equipamento. Consulte a fonte para detalhes de execução.</p></div></div>
   <div class="library-controls"><input id="librarySearch" aria-label="Pesquisar exercícios" placeholder="🔎 Pesquisar exercício..."></div>
   <div id="catalogFilter" class="catalog-filter"></div>
   <div id="catalogGrid" class="catalog-grid"></div>

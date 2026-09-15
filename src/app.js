@@ -257,7 +257,7 @@ function renderLibrary(){
   const arr=CATALOG.filter(x=>(currentLibraryMuscle==="Todos"||belongsTo(x,currentLibraryMuscle))&&(!q||searchText(x.name).includes(q)||searchText((x.muscles||[x.muscle]).join(' ')).includes(q)||searchText(x.equipment).includes(q)));
   document.getElementById("catalogGrid").innerHTML=arr.map(x=>`<article class="lib-card">
     ${x.gif?`<img loading="lazy" src="${esc(x.gif || "/public/media-unavailable.svg")}" alt="Execução: ${esc(x.name)}">`:`<div class="empty" style="height:160px;display:flex;align-items:center;justify-content:center;border:0;border-radius:0">GIF não disponível no material atual</div>`}
-    <div class="lib-body"><strong>${esc(x.name)}</strong><div class="lib-meta"><span class="tag">${esc(x.muscle)}</span><span class="tag">🔧 ${esc(x.equipment)}</span></div><p>${esc(x.description)}</p>${mediaDetails(x,true)}
+    <div class="lib-body"><strong>${esc(x.name)}</strong><div class="lib-meta"><span class="tag">${esc(x.muscle)}</span><span class="tag">🔧 ${esc(x.equipment)}</span></div><p>${esc(x.description)}</p>${mediaDetails(x)}
     <div class="lib-actions"><button class="btn primary" data-lib-add="${esc(x.id)}">+ Adicionar</button></div></div>
   </article>`).join("") || "<div class='empty'>Nenhum exercício encontrado.</div>";
   document.querySelectorAll("[data-lib-add]").forEach(b=>b.onclick=()=>openAddModal(b.dataset.libAdd));

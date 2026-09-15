@@ -39,6 +39,10 @@ export function setupNavigation(render) {
   buttons.forEach(button => button.onclick = () => go(button.dataset.view));
   toggle.onclick = () => expand(!expanded);
   backdrop.onclick = () => { expand(false); toggle.focus(); };
+  document.addEventListener('pointerdown', event => {
+    if (!expanded || mobile.matches) return;
+    if (!event.target.closest('.sidebar') && !event.target.closest('.sidebar-toggle')) expand(false);
+  });
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && expanded) { expand(false); toggle.focus(); }
     if (event.key === 'Tab' && mobile.matches && expanded) {

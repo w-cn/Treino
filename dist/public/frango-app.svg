@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 160" role="img" aria-labelledby="title desc">
+  <title id="title">Frango App treinando</title>
+  <desc id="desc">Ilustração vetorial de um frango levantando uma barra.</desc>
+  <rect width="220" height="160" rx="28" fill="#142b3f"/>
+  <g stroke="#f7f4eb" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path fill="#fffaf0" d="M82 76c-18-10-31-4-34 12-3 16 9 27 25 25 3 18 17 29 35 25 18-4 27-20 23-37-4-18-26-34-49-25z"/>
+    <path fill="#ef554f" d="M91 52c-10-18 9-25 14-12 4-15 22-8 13 8-5 9-16 13-27 4z"/>
+    <circle fill="#1d2933" cx="91" cy="75" r="3"/>
+    <path fill="#f2a93b" d="M101 79l17 6-17 8z"/>
+    <path fill="none" d="M80 103c8 7 20 7 29 0M75 136v13M111 136v13M68 149h15M104 149h15"/>
+    <path fill="none" d="M73 64L42 34M125 64l31-30M42 34h114"/>
+    <path fill="none" stroke="#ef554f" d="M27 24v20M18 34h18M175 24v20M166 34h18"/>
+  </g>
+  <g fill="#58b9ff"><rect x="31" y="25" width="10" height="18" rx="3"/><rect x="151" y="25" width="10" height="18" rx="3"/></g>
+</svg>

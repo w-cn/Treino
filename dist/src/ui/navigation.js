@@ -19,9 +19,8 @@ export function setupNavigation(render) {
     document.body.classList.toggle('sidebar-expanded', value);
     toggle.setAttribute('aria-expanded', String(value));
     toggle.setAttribute('aria-label', value ? 'Recolher menu' : 'Expandir menu');
-    nav.inert = !value;
-    document.getElementById('mainContent').inert = value;
-    backdrop.hidden = !value;
+    nav.inert = mobile.matches && !value;
+    backdrop.hidden = !mobile.matches || !value;
   }
   function go(id, push = true) {
     if (!views.has(id)) id = 'inicioView';
@@ -35,14 +34,18 @@ export function setupNavigation(render) {
     document.querySelectorAll('.view').forEach(view => view.classList.toggle('active', view.id === id));
     document.getElementById('currentPageTitle').textContent = buttons.find(b => b.dataset.view === id).getAttribute('aria-label');
     render(id);
-    expand(false);
+    if (mobile.matches) expand(false);
   }
   buttons.forEach(button => button.onclick = () => go(button.dataset.view));
   toggle.onclick = () => expand(!expanded);
   backdrop.onclick = () => { expand(false); toggle.focus(); };
+  document.addEventListener('pointerdown', event => {
+    if (!expanded || mobile.matches) return;
+    if (!event.target.closest('.sidebar') && !event.target.closest('.sidebar-toggle')) expand(false);
+  });
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && expanded) { expand(false); toggle.focus(); }
-    if (event.key === 'Tab' && expanded) {
+    if (event.key === 'Tab' && mobile.matches && expanded) {
       const controls = [toggle, ...buttons];
       if (event.shiftKey && document.activeElement === controls[0]) { event.preventDefault(); controls.at(-1).focus(); }
       else if (!event.shiftKey && document.activeElement === controls.at(-1)) { event.preventDefault(); toggle.focus(); }
@@ -55,4 +58,3 @@ export function setupNavigation(render) {
   go(location.hash.slice(1) || readPreferences().view || 'inicioView', false);
   return { go };
 }
-
