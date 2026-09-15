@@ -24,6 +24,7 @@
   <button class="main-tab active" data-view="fichaView">📋 Minha Ficha</button>
   <button class="main-tab" data-view="treinoView">🏋️ Meu Treino</button>
   <button class="main-tab" data-view="bibliotecaView">📚 Biblioteca</button>
+  <button class="main-tab" data-view="recomendacoesView">🧭 Recomendações</button>
 </nav>
 
 <section id="fichaView" class="view active">
@@ -42,6 +43,12 @@
   <div class="library-controls"><input id="librarySearch" aria-label="Pesquisar exercícios" placeholder="🔎 Pesquisar exercício..."></div>
   <div id="catalogFilter" class="catalog-filter"></div>
   <div id="catalogGrid" class="catalog-grid"></div>
+</section>
+
+<section id="recomendacoesView" class="view">
+  <div class="section-head"><div><h2>Recomendações</h2><p>Escolha um objetivo para ver uma estrutura baseada em revisões e diretrizes.</p></div></div>
+  <div id="recommendationFilters" class="recommendation-filters"></div>
+  <div id="recommendationContent"></div>
 </section>
 </div>
 

@@ -3,11 +3,13 @@ import { DAYS } from './data/state.js';
 import { loadState, persistState, flushState, storageStatus } from './services/storage.js';
 import './services/media.js';
 import { belongsTo, createExercise, reserveGroups, replacementTargets, replaceExercise } from './data/workout.js';
+import { RECOMMENDATIONS } from './data/recommendations.js';
 const DEFAULT_REST = { "Peito":"90–120 s","Costas":"90–120 s","Bíceps":"60–90 s","Tríceps":"60–90 s","Deltoides":"60–90 s","Ombros":"60–90 s","Pernas":"90–120 s","Panturrilhas":"60–90 s","Abdômen":"60–90 s","Trapézio":"60–90 s","Antebraço":"60–90 s","Glúteos":"60–90 s" };
 let state = await loadState();
 document.getElementById('storageStatus').textContent=storageStatus;
 let currentFichaDay = 0;
 let currentLibraryMuscle = "Todos";
+let currentRecommendation = 'massa';
 let timers = {};
 
 function saveState(){ persistState(state); }
@@ -32,6 +34,7 @@ function switchView(id){
   if(id==="fichaView") renderFicha();
   if(id==="treinoView") renderBuilder();
   if(id==="bibliotecaView") renderLibrary();
+  if(id==="recomendacoesView") renderRecommendations();
 }
 document.querySelectorAll(".main-tab").forEach(b=>b.onclick=()=>switchView(b.dataset.view));
 
@@ -236,6 +239,17 @@ function renderLibrary(){
   document.querySelectorAll("[data-lib-add]").forEach(b=>b.onclick=()=>openAddModal(b.dataset.libAdd));
 }
 document.getElementById("librarySearch").addEventListener("input",renderLibrary);
+
+function renderRecommendations(){
+  const item=RECOMMENDATIONS.find(x=>x.id===currentRecommendation)||RECOMMENDATIONS[0];
+  document.getElementById('recommendationFilters').innerHTML=RECOMMENDATIONS.map(x=>`<button class="btn ${x.id===item.id?'primary':''}" data-recommendation="${x.id}">${x.icon} ${x.label}</button>`).join('');
+  document.querySelectorAll('[data-recommendation]').forEach(button=>button.onclick=()=>{currentRecommendation=button.dataset.recommendation;renderRecommendations()});
+  document.getElementById('recommendationContent').innerHTML=`
+    <div class="recommendation-hero"><div><span class="eyebrow">${item.target}</span><h3>${item.label}</h3><p>${item.summary}</p></div><span class="recommendation-mark">${item.icon}</span></div>
+    <div class="recommendation-grid"><section class="recommendation-panel"><h4>Diretrizes praticas</h4><div class="recommendation-list">${item.prescription.map(([label,value])=>`<div><strong>${label}</strong><span>${value}</span></div>`).join('')}</div></section><section class="recommendation-panel"><h4>Exemplo de semana</h4><ol class="week-list">${item.week.map(day=>`<li>${day}</li>`).join('')}</ol><p class="recommendation-note"><strong>Progressao:</strong> ${item.progression}</p></section></div>
+    <section class="recommendation-source"><h4>Base usada</h4><p>${item.reference}</p><a class="source" href="${item.link}" target="_blank" rel="noopener">Abrir referencia ↗</a></section>
+    <p class="recommendation-disclaimer">Diretriz geral para adultos saudaveis. Dor, lesao, gestacao, doencas ou uso de medicamentos pedem avaliacao profissional. Ajuste exercicios, volume e cardio ao seu nivel, rotina e recuperacao.</p>`;
+}
 
 function openAddModal(id){
   const x=BY_ID[id];
