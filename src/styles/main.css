@@ -36,7 +36,7 @@ h1{font-size:25px;margin:0 0 4px}
 .topstats{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .pill{border:1px solid var(--line);background:#101d2d;border-radius:999px;padding:6px 9px;color:#b9c7d8;font-size:10px}
 .main-tabs{position:sticky;top:0;z-index:20;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:7px 0;background:#070d16ee;backdrop-filter:blur(12px)}
-.main-tab{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:12px;padding:11px 6px;font-weight:800;font-size:12px}
+.main-tab{min-width:0;border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:12px;padding:9px 3px;font-weight:800;font-size:11px;line-height:1.15;overflow-wrap:anywhere}
 .main-tab.active{background:#123454;color:var(--blue);border-color:#327fb8}
 .view{display:none}.view.active{display:block}
 .section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0}
@@ -109,5 +109,5 @@ h1{font-size:25px;margin:0 0 4px}
  .fields{grid-template-columns:repeat(2,1fr)}.fields .field:last-child{grid-column:1/-1}.suggestion{width:calc((100% - 12px)/2);max-width:180px}
  .picker-grid{grid-template-columns:1fr}.pick-media{height:190px}.catalog-grid{grid-template-columns:1fr}
  .lib-card img{height:210px}
- .main-tabs{grid-template-columns:repeat(2,1fr)}.recommendation-grid{grid-template-columns:1fr}.recommendation-hero h3{font-size:19px}
+ .main-tabs{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}.main-tab{font-size:9px;padding:8px 2px;border-radius:9px}.recommendation-grid{grid-template-columns:1fr}.recommendation-hero h3{font-size:19px}
 }

@@ -268,6 +268,7 @@ document.getElementById("modalClose").onclick=closeModal;
 document.getElementById("imageModal").addEventListener("click",e=>{if(e.target.id==="imageModal")closeModal()});
 
 renderFicha();
+renderRecommendations();
 
 function searchText(value){return value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
