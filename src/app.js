@@ -4,6 +4,7 @@ import { loadState, persistState, flushState, storageStatus } from './services/s
 import './services/media.js';
 import { belongsTo, createExercise, reserveGroups, replacementTargets, replaceExercise } from './data/workout.js';
 import { RECOMMENDATIONS } from './data/recommendations.js';
+import { MUSCLE_ILLUSTRATIONS } from './data/muscle-illustrations.js';
 const DEFAULT_REST = { "Peito":"90–120 s","Costas":"90–120 s","Bíceps":"60–90 s","Tríceps":"60–90 s","Deltoides":"60–90 s","Ombros":"60–90 s","Pernas":"90–120 s","Panturrilhas":"60–90 s","Abdômen":"60–90 s","Trapézio":"60–90 s","Antebraço":"60–90 s","Glúteos":"60–90 s" };
 let state = await loadState();
 document.getElementById('storageStatus').textContent=storageStatus;
@@ -39,11 +40,14 @@ function switchView(id){
 document.querySelectorAll(".main-tab").forEach(b=>b.onclick=()=>switchView(b.dataset.view));
 
 function renderFicha(){
+  const visibleDays=DAYS.filter(day=>!['Sábado','Domingo'].includes(day)||state.days[day].exercises.length>0);
+  if(!visibleDays.length) return;
+  if(!visibleDays.includes(DAYS[currentFichaDay])) currentFichaDay=DAYS.indexOf(visibleDays[0]);
   const tabs=document.getElementById("fichaDayTabs");
-  tabs.innerHTML=DAYS.map((d,i)=>`<button class="day-tab ${i===currentFichaDay?"active":""}" data-i="${i}">${dayIcon(d)}<br>${d}</button>`).join("");
+  tabs.innerHTML=visibleDays.map(d=>{const i=DAYS.indexOf(d);return `<button class="day-tab ${i===currentFichaDay?"active":""}" data-i="${i}">${dayIcon(d)}<br>${d}</button>`}).join("");
   tabs.querySelectorAll("button").forEach(b=>b.onclick=()=>{currentFichaDay=+b.dataset.i;renderFicha()});
   const wrap=document.getElementById("fichaDays");
-  wrap.innerHTML=DAYS.map((d,i)=>renderFichaDay(d,i===currentFichaDay)).join("");
+  wrap.innerHTML=visibleDays.map(d=>renderFichaDay(d,d===DAYS[currentFichaDay])).join("");
   bindFicha();
   updateTimers();
 }
@@ -195,8 +199,9 @@ function renderBuilderDay(day,open){
 function renderPicker(day,muscle,query){
   const d=state.days[day], selected=new Set(d.exercises.map(e=>e.id));
   const arr=CATALOG.filter(x=>belongsTo(x,muscle) && (!query||x.name.toLowerCase().includes(query.toLowerCase())));
-  return `<div class="exercise-picker open" data-picker="${esc(muscle)}">
-    <div class="picker-head"><h4>${esc(muscle)}</h4><span class="selected-mark">${d.exercises.filter(e=>e.muscle===muscle).length} selecionado(s)</span></div>
+     return `<div class="exercise-picker open" data-picker="${esc(muscle)}">
+       <div class="muscle-illustration">${MUSCLE_ILLUSTRATIONS[muscle]?`<img loading="lazy" src="${esc(MUSCLE_ILLUSTRATIONS[muscle])}" alt="Ilustração anatômica: ${esc(muscle)}">`:''}<div><strong>${esc(muscle)}</strong><span>Musculatura trabalhada</span></div></div>
+       <div class="picker-head"><h4>${esc(muscle)}</h4><span class="selected-mark">${d.exercises.filter(e=>e.muscle===muscle).length} selecionado(s)</span></div>
     <input class="picker-search" data-muscle="${esc(muscle)}" placeholder="🔎 Pesquisar em ${esc(muscle)}..." value="${esc(query)}">
     <div class="picker-grid">${arr.map(x=>`<div class="pick-card">
       <div class="pick-media">${x.gif?`<img loading="lazy" src="${esc(x.gif || "/public/media-unavailable.svg")}" alt="Execução: ${esc(x.name)}">`:"<div class='empty' style='border:0;border-radius:0;height:100%;display:flex;align-items:center'>GIF não disponível no material atual</div>"}</div>
@@ -253,7 +258,7 @@ function renderRecommendations(){
   document.getElementById('recommendationContent').innerHTML=`
     <div class="recommendation-hero"><div><span class="eyebrow">${item.target}</span><h3>${item.label}</h3><p>${item.summary}</p></div><span class="recommendation-mark">${item.icon}</span></div>
     <div class="recommendation-grid"><section class="recommendation-panel"><h4>Diretrizes praticas</h4><div class="recommendation-list">${item.prescription.map(([label,value])=>`<div><strong>${label}</strong><span>${value}</span></div>`).join('')}</div></section><section class="recommendation-panel"><h4>Resumo da semana</h4><ol class="week-list">${item.week.map(day=>`<li>${day}</li>`).join('')}</ol><p class="recommendation-note"><strong>Progressao:</strong> ${item.progression}</p></section></div>
-    <section class="recommendation-workouts"><h4>Exercicios sugeridos da sua biblioteca</h4><p class="recommendation-intro">Estes ${recommendedExercises.length} exercicios ja existem na biblioteca e incluem GIF. Use-os para montar os dias no separador <strong>Meu Treino</strong>.</p><div class="recommended-exercises">${recommendedExercises.slice(0,8).map(x=>`<article class="recommended-exercise"><img loading="lazy" src="${esc(x.gif)}" alt="Execucao: ${esc(x.name)}"><div><strong>${esc(x.name)}</strong><span>${esc(x.muscle)} · ${esc(x.equipment)}</span></div></article>`).join('')}</div>${item.workouts.map(workout=>`<article class="workout-plan"><div class="workout-plan-head"><strong>${workout.day}</strong><span>${workout.focus}</span></div><ul>${workout.exercises.map(([name,details])=>`<li><span>${name}</span><b>${details}</b></li>`).join('')}</ul></article>`).join('')}</section>
+    <section class="recommendation-workouts"><h4>Exercicios sugeridos da sua biblioteca</h4><p class="recommendation-intro">Cada sessao abaixo usa exercicios da sua biblioteca e mostra o GIF, o nome e o volume sugerido.</p>${item.workouts.map(workout=>`<article class="workout-plan"><div class="workout-plan-head"><strong>${workout.day}</strong><span>${workout.focus}</span></div><div class="workout-exercises">${workout.exercises.map(([name,details])=>{const exercise=CATALOG.find(x=>x.name===name);return exercise?`<div class="workout-exercise"><img loading="lazy" src="${esc(exercise.gif)}" alt="Execucao: ${esc(exercise.name)}"><div class="workout-exercise-caption"><span>${esc(exercise.name)}</span><b>${esc(details)}</b></div></div>`:''}).join('')}</div></article>`).join('')}</section>
     <section class="recommendation-source"><h4>Base usada</h4><p>${item.reference}</p><a class="source" href="${item.link}" target="_blank" rel="noopener">Abrir referencia ↗</a></section>
     <p class="recommendation-disclaimer">Diretriz geral para adultos saudaveis. Dor, lesao, gestacao, doencas ou uso de medicamentos pedem avaliacao profissional. Ajuste exercicios, volume e cardio ao seu nivel, rotina e recuperacao.</p>`;
 }
