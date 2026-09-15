@@ -3,8 +3,7 @@ export const MEDIA_OVERRIDES = {
   "i-ceps-osca-spider": {
     "gif": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-spider.gif",
     "mediaSource": "https://www.hipertrofia.org/blog/2019/04/17/exercicios-para-biceps/",
-    "equipment": "Barra/halteres",
-    "mediaCaption": "Demonstração com barra."
+    "equipment": "Barra/halteres"
   },
   "i-ceps-hin-p": {
     "gif": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/chinup-1.gif",
@@ -13,8 +12,7 @@ export const MEDIA_OVERRIDES = {
   "i-ceps-osca-cott": {
     "gif": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-scott.gif",
     "mediaSource": "https://www.hipertrofia.org/blog/2019/04/17/exercicios-para-biceps/",
-    "equipment": "Barra/banco Scott/máquina",
-    "mediaCaption": "Demonstração com barra no banco Scott."
+    "equipment": "Barra/banco Scott/máquina"
   },
   "i-ceps-osca-arrastada-drag-crl": {
     "gif": "https://www.hipertrofia.org/blog/wp-content/uploads/2019/04/rosca-arrastada.gif",

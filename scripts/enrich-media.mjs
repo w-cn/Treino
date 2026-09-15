@@ -15,8 +15,8 @@ const aliases = {
   'Extensão do quadril na polia': 'Coice glúteo na polia'
 };
 const details = {
-  'Rosca spider': { equipment: 'Barra/halteres', mediaCaption: 'Demonstração com barra.' },
-  'Rosca Scott': { equipment: 'Barra/banco Scott/máquina', mediaCaption: 'Demonstração com barra no banco Scott.' },
+  'Rosca spider': { equipment: 'Barra/halteres' },
+  'Rosca Scott': { equipment: 'Barra/banco Scott/máquina' },
   'Desenvolvimento com barra': { mediaCaption: 'Demonstração sentado.' },
   'Crucifixo inverso': { mediaCaption: 'Demonstração com halteres.' },
   'Encolhimento': { mediaCaption: 'Demonstração com halteres.' },
