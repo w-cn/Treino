@@ -1,6 +1,6 @@
 import { BY_ID, MUSCLES } from './catalog.js';
 
-export const DAYS = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'];
+export const DAYS = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
 export const STORAGE_KEY = 'meuTreino.v5.state';
 
 export function defaultState() {

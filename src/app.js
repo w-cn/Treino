@@ -196,7 +196,7 @@ function renderPicker(day,muscle,query){
   const d=state.days[day], selected=new Set(d.exercises.map(e=>e.id));
   const arr=CATALOG.filter(x=>belongsTo(x,muscle) && (!query||x.name.toLowerCase().includes(query.toLowerCase())));
   return `<div class="exercise-picker open" data-picker="${esc(muscle)}">
-    <div class="picker-head"><h4>${esc(muscle)} — escolha seus exercícios</h4><span class="selected-mark">${d.exercises.filter(e=>e.muscle===muscle).length} selecionado(s)</span></div>
+    <div class="picker-head"><h4>${esc(muscle)}</h4><span class="selected-mark">${d.exercises.filter(e=>e.muscle===muscle).length} selecionado(s)</span></div>
     <input class="picker-search" data-muscle="${esc(muscle)}" placeholder="🔎 Pesquisar em ${esc(muscle)}..." value="${esc(query)}">
     <div class="picker-grid">${arr.map(x=>`<div class="pick-card">
       <div class="pick-media">${x.gif?`<img loading="lazy" src="${esc(x.gif || "/public/media-unavailable.svg")}" alt="Execução: ${esc(x.name)}">`:"<div class='empty' style='border:0;border-radius:0;height:100%;display:flex;align-items:center'>GIF não disponível no material atual</div>"}</div>
@@ -242,12 +242,18 @@ document.getElementById("librarySearch").addEventListener("input",renderLibrary)
 
 function renderRecommendations(){
   const item=RECOMMENDATIONS.find(x=>x.id===currentRecommendation)||RECOMMENDATIONS[0];
+  const recommendedExercises=[];
+  const seenExercises=new Set();
+  for(const workout of item.workouts) for(const [name] of workout.exercises){
+    const exercise=CATALOG.find(x=>x.name===name);
+    if(exercise&&!seenExercises.has(exercise.id)){seenExercises.add(exercise.id);recommendedExercises.push(exercise);}
+  }
   document.getElementById('recommendationFilters').innerHTML=RECOMMENDATIONS.map(x=>`<button class="btn ${x.id===item.id?'primary':''}" data-recommendation="${x.id}">${x.icon} ${x.label}</button>`).join('');
   document.querySelectorAll('[data-recommendation]').forEach(button=>button.onclick=()=>{currentRecommendation=button.dataset.recommendation;renderRecommendations()});
   document.getElementById('recommendationContent').innerHTML=`
     <div class="recommendation-hero"><div><span class="eyebrow">${item.target}</span><h3>${item.label}</h3><p>${item.summary}</p></div><span class="recommendation-mark">${item.icon}</span></div>
     <div class="recommendation-grid"><section class="recommendation-panel"><h4>Diretrizes praticas</h4><div class="recommendation-list">${item.prescription.map(([label,value])=>`<div><strong>${label}</strong><span>${value}</span></div>`).join('')}</div></section><section class="recommendation-panel"><h4>Resumo da semana</h4><ol class="week-list">${item.week.map(day=>`<li>${day}</li>`).join('')}</ol><p class="recommendation-note"><strong>Progressao:</strong> ${item.progression}</p></section></div>
-    <section class="recommendation-workouts"><h4>Exercicios sugeridos da sua biblioteca</h4><p class="recommendation-intro">Use estes exemplos para montar os dias no separador <strong>Meu Treino</strong>. As series abaixo sao pontos de partida, nao uma regra fixa.</p>${item.workouts.map(workout=>`<article class="workout-plan"><div class="workout-plan-head"><strong>${workout.day}</strong><span>${workout.focus}</span></div><ul>${workout.exercises.map(([name,details])=>`<li><span>${name}</span><b>${details}</b></li>`).join('')}</ul></article>`).join('')}</section>
+    <section class="recommendation-workouts"><h4>Exercicios sugeridos da sua biblioteca</h4><p class="recommendation-intro">Estes ${recommendedExercises.length} exercicios ja existem na biblioteca e incluem GIF. Use-os para montar os dias no separador <strong>Meu Treino</strong>.</p><div class="recommended-exercises">${recommendedExercises.slice(0,8).map(x=>`<article class="recommended-exercise"><img loading="lazy" src="${esc(x.gif)}" alt="Execucao: ${esc(x.name)}"><div><strong>${esc(x.name)}</strong><span>${esc(x.muscle)} · ${esc(x.equipment)}</span></div></article>`).join('')}</div>${item.workouts.map(workout=>`<article class="workout-plan"><div class="workout-plan-head"><strong>${workout.day}</strong><span>${workout.focus}</span></div><ul>${workout.exercises.map(([name,details])=>`<li><span>${name}</span><b>${details}</b></li>`).join('')}</ul></article>`).join('')}</section>
     <section class="recommendation-source"><h4>Base usada</h4><p>${item.reference}</p><a class="source" href="${item.link}" target="_blank" rel="noopener">Abrir referencia ↗</a></section>
     <p class="recommendation-disclaimer">Diretriz geral para adultos saudaveis. Dor, lesao, gestacao, doencas ou uso de medicamentos pedem avaliacao profissional. Ajuste exercicios, volume e cardio ao seu nivel, rotina e recuperacao.</p>`;
 }
